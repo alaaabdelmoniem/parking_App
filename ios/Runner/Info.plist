@@ -66,5 +66,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>This app needs access to your location to show local content.</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>This app needs continuous location access to track your route.</string>
+
 </dict>
 </plist>
