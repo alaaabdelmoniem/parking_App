@@ -9,7 +9,7 @@ class RoundedSheetContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.3,
+      initialChildSize: 0.2,
       minChildSize: 0.1,
       maxChildSize: 0.85,
       // snap: true, // عشان يوقف عند نقط محددة بدل ما يفضل يتحرك حر
