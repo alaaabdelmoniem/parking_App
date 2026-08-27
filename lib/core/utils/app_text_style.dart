@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'app_colors.dart';
 import 'app_theme.dart';
 
@@ -22,113 +23,123 @@ class AppTextStyle {
 
   // ---- Hero / header (dark gradient surfaces: Home, History, Profile) ----
   /// "Alex Chen", "Parking History" — dark hero header titles
-  static const TextStyle heroTitle = TextStyle(
+  static TextStyle heroTitle = TextStyle(
     fontFamily: _sans,
-    fontSize: 22,
+    fontSize: 22.sp,
     fontWeight: FontWeight.w800,
     letterSpacing: -0.3,
     color: AppColors.textOnDark,
     height: 1.15,
   );
+
   /// "Good afternoon", "47 sessions this month" — hero subtitle/eyebrow
-  static const TextStyle heroSubtitle = TextStyle(
+  static TextStyle heroSubtitle = TextStyle(
     fontFamily: _sans,
-    fontSize: 13,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w500,
     color: AppColors.textOnDarkMuted,
   );
 
   // ---- Page / section titles (light surfaces) ----
   /// Screen-level titles — "My Reservations", "Get Directions"
-  static const TextStyle pageTitle = TextStyle(
+  static TextStyle pageTitle = TextStyle(
     fontFamily: _sans,
-    fontSize: 22,
+    fontSize: 22.sp,
     fontWeight: FontWeight.w800,
     letterSpacing: -0.3,
   );
+
   /// Sheet/modal headers — "Active Session", "Notifications"
-  static const TextStyle sheetTitle = TextStyle(
+  static TextStyle sheetTitle = TextStyle(
     fontFamily: _sans,
-    fontSize: 17,
+    fontSize: 17.sp,
     fontWeight: FontWeight.w800,
     letterSpacing: -0.2,
   );
+
   /// Section labels above a group — "Nearby Parking", "Amenities"
-  static const TextStyle sectionTitle = TextStyle(
+  static TextStyle sectionTitle = TextStyle(
     fontFamily: _sans,
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w700,
   );
+
   /// Uppercase eyebrow labels — "PAYMENT METHODS", "ACCOUNT & SETTINGS"
-  static const TextStyle sectionLabel = TextStyle(
+  static TextStyle sectionLabel = TextStyle(
     fontFamily: _sans,
-    fontSize: 13,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w700,
     letterSpacing: 0.8,
   );
 
   // ---- Cards ----
   /// Parking lot / reservation card titles
-  static const TextStyle cardTitle = TextStyle(
+  static TextStyle cardTitle = TextStyle(
     fontFamily: _sans,
-    fontSize: 14,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w700,
   );
+
   /// Card subtitle — address, distance, "0.7 mi · Garage"
-  static const TextStyle cardSubtitle = TextStyle(
+  static TextStyle cardSubtitle = TextStyle(
     fontFamily: _sans,
-    fontSize: 11,
+    fontSize: 11.sp,
     fontWeight: FontWeight.w500,
     color: AppColors.textBody,
   );
+
   /// Body copy — reviews, descriptions, entrance hints
-  static const TextStyle body = TextStyle(
+  static TextStyle body = TextStyle(
     fontFamily: _sans,
-    fontSize: 13,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w400,
     height: 1.5,
     color: AppColors.textBody,
   );
+
   /// Small body copy — helper text, form hints
-  static const TextStyle bodySmall = TextStyle(
+  static TextStyle bodySmall = TextStyle(
     fontFamily: _sans,
-    fontSize: 12,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     color: AppColors.textBody,
   );
 
   // ---- Buttons / pills ----
   /// Primary button label — "Reserve Spot", "Extend Parking"
-  static const TextStyle buttonLarge = TextStyle(
+  static TextStyle buttonLarge = TextStyle(
     fontFamily: _sans,
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w700,
   );
+
   /// Secondary button / pill label — "Cancel", "Modify", tab labels
-  static const TextStyle buttonSmall = TextStyle(
+  static TextStyle buttonSmall = TextStyle(
     fontFamily: _sans,
-    fontSize: 13,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w600,
   );
+
   /// Status pill text — "Active Now", "Filling up"
-  static const TextStyle pill = TextStyle(
+  static TextStyle pill = TextStyle(
     fontFamily: _sans,
-    fontSize: 11,
+    fontSize: 11.sp,
     fontWeight: FontWeight.w600,
   );
 
   // ---- Captions / meta ----
   /// Timestamps, review dates, receipt IDs (non-numeric meta)
-  static const TextStyle caption = TextStyle(
+  static TextStyle caption = TextStyle(
     fontFamily: _sans,
-    fontSize: 11,
+    fontSize: 11.sp,
     fontWeight: FontWeight.w500,
     color: AppColors.textTertiary,
   );
+
   /// Smallest labels — stat sub-labels, grid item captions
-  static const TextStyle captionSmall = TextStyle(
+  static TextStyle captionSmall = TextStyle(
     fontFamily: _sans,
-    fontSize: 9,
+    fontSize: 9.sp,
     fontWeight: FontWeight.w600,
     color: AppColors.textTertiary,
     letterSpacing: 0.4,
@@ -136,27 +147,30 @@ class AppTextStyle {
 
   // ---- Monospace (prices, timers, spot/booking codes) ----
   /// Large mono display — live cost, countdown timer ("$12.00", "01:27:04")
-  static const TextStyle monoDisplay = TextStyle(
+  static TextStyle monoDisplay = TextStyle(
     fontFamily: _mono,
-    fontSize: 30,
+    fontSize: 30.sp,
     fontWeight: FontWeight.w600,
   );
+
   /// Prominent price — card price tags, reservation totals
-  static const TextStyle monoPriceLarge = TextStyle(
+  static TextStyle monoPriceLarge = TextStyle(
     fontFamily: _mono,
-    fontSize: 20,
+    fontSize: 18.sp,
     fontWeight: FontWeight.w600,
   );
+
   /// Inline price — "$6/hr" within a row
-  static const TextStyle monoPrice = TextStyle(
+  static TextStyle monoPrice = TextStyle(
     fontFamily: _mono,
-    fontSize: 16,
+    fontSize: 13.sp,
     fontWeight: FontWeight.w600,
   );
+
   /// Small mono — spot numbers, booking codes, receipt IDs
-  static const TextStyle monoSmall = TextStyle(
+  static TextStyle monoSmall = TextStyle(
     fontFamily: _mono,
-    fontSize: 12,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w500,
   );
 }
