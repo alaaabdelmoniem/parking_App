@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -21,8 +22,7 @@ class _OpenStreetMapsTutorialState extends State<OpenStreetMapsTutorial> {
   List<Marker> markers = [];
   // list of points to draw the route
   List<LatLng> routePoints = [];
-  final orsApiKey =
-      'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImUxZWVmMDEzMTRhODQ2NDc5ZjAyOTI5NDhiZThiNDQ0IiwiaCI6Im11cm11cjY0In0=';
+  final orsApiKey = dotenv.env['ORS_API_KEY']!;
 
   @override
   void initState() {

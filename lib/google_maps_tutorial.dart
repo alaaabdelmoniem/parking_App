@@ -16,13 +16,13 @@
 //   LatLng? _currentPosition;
 //   Marker? _currentLocationMarker;
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
 
-  //   _getCurrentLocation();
-  // }
+//     _getCurrentLocation();
+//   }
 
 //   void goTo() {
 //     _googleMapController!.animateCamera(

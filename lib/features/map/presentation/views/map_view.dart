@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:parking/core/utils/widgets/custom_floating_action_buttons.dart';
+import 'package:parking/features/map/data/test.dart';
 import 'package:parking/features/map/presentation/views/widgets/rounded_sheet_content.dart';
 import 'package:parking/features/map/presentation/views/widgets/search_text_field.dart';
 
@@ -25,7 +26,6 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-
     _getCurrentLocation();
   }
 
@@ -50,6 +50,9 @@ class _MapScreenState extends State<MapScreen> {
       (Position position) {
         setState(() {
           currentPosition = position;
+          log(
+            'current: ${currentPosition!.latitude},${currentPosition!.longitude}',
+          );
 
           // remove the old "current location" marker and add the updated one
           markers.removeWhere(
