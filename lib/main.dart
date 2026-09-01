@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/cache/cache_helper.dart';
 import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_theme.dart';
-import 'package:parking/features/map/data/repos/overpass_spots_imple.dart';
+import 'package:parking/features/map/data/repos/overpass_repo/overpass_spots_imple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {

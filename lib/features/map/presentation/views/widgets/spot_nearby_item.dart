@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:parking/features/map/data/models/spot_model.dart';
 import 'package:parking/features/map/presentation/views/widgets/spot_nearby_item_details.dart';
 
 class SpotNearbyItem extends StatelessWidget {
-  const SpotNearbyItem({super.key});
-
+  const SpotNearbyItem({super.key, required this.spotModel});
+  final SpotModel spotModel;
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
@@ -21,11 +22,11 @@ class SpotNearbyItem extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
               ),
-              Expanded(child: Container(width: 2, color: Colors.grey.shade300)),
+              Expanded(child: Container(width: 1, color: Colors.grey.shade300)),
             ],
           ),
           SizedBox(width: 10.w),
-          const Expanded(child: SpotNearbyItemDetails()),
+          Expanded(child: SpotNearbyItemDetails(spotModel: spotModel)),
         ],
       ),
     );

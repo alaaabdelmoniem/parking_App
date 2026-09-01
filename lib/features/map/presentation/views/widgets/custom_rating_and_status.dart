@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
-
+import 'package:parking/features/map/data/models/spot_model.dart';
 
 class CustomRatingAndStatus extends StatelessWidget {
-  const CustomRatingAndStatus({super.key});
-
+  const CustomRatingAndStatus({super.key, required this.spotModel});
+  final SpotModel spotModel;
   @override
   Widget build(BuildContext context) {
     return FittedBox(
@@ -33,7 +33,7 @@ class CustomRatingAndStatus extends StatelessWidget {
           Icon(Icons.star, color: AppColors.rating, size: 18.r),
           SizedBox(width: 1.w),
           Text(
-            '4.5',
+            '${spotModel.rate}',
             style: AppTextStyle.body.copyWith(
               color: AppColors.rating,
               fontSize: 15.sp,

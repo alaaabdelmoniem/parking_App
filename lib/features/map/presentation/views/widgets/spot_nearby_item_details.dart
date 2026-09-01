@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/features/map/data/models/spot_model.dart';
 import 'package:parking/features/map/presentation/views/widgets/custom_price.dart';
 import 'package:parking/features/map/presentation/views/widgets/custom_rating_and_status.dart';
 
 class SpotNearbyItemDetails extends StatelessWidget {
-  const SpotNearbyItemDetails({super.key});
+  const SpotNearbyItemDetails({super.key, required this.spotModel});
+  final SpotModel spotModel;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class SpotNearbyItemDetails extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(12.r),
             child: Image.asset(
-              'assets/images/Garage Thumbnail.png',
+              spotModel.images[0],
               width: 80.w,
               height: 80.h,
               fit: BoxFit.cover,
@@ -41,7 +43,7 @@ class SpotNearbyItemDetails extends StatelessWidget {
 
                     children: [
                       Text(
-                        'Market St Garage',
+                        spotModel.name,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyle.cardTitle.copyWith(
@@ -53,11 +55,11 @@ class SpotNearbyItemDetails extends StatelessWidget {
                         style: AppTextStyle.cardSubtitle,
                       ),
                       SizedBox(height: 11.h),
-                      const CustomRatingAndStatus(),
+                       CustomRatingAndStatus(spotModel: spotModel,),
                     ],
                   ),
                 ),
-                const CustomPrice(),
+                 CustomPrice(spotModel: spotModel,),
               ],
             ),
           ),

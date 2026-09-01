@@ -2,10 +2,12 @@ import 'dart:developer';
 import 'dart:math' hide log;
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:parking/core/cache/cache_keys.dart';
+import 'package:parking/core/errors/dio_handler.dart';
 import 'package:parking/core/errors/failure.dart';
 import 'package:parking/features/map/data/mock/mock_spot_data.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
-import 'package:parking/features/map/data/repos/overpass_spots.dart';
+import 'package:parking/features/map/data/repos/overpass_repo/overpass_spots.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide Headers;
 
 class OverpassSpotsImple implements OverpassGetSpots {
@@ -61,7 +63,7 @@ class OverpassSpotsImple implements OverpassGetSpots {
         );
       }
       await _supabase
-          .from('parking_spots')
+          .from(CacheKeys.parkingSpotsTable)
           .upsert(
             spotsToInsert.map((s) => s.toJson()).toList(),
             onConflict: 'osm_id',
@@ -71,10 +73,10 @@ class OverpassSpotsImple implements OverpassGetSpots {
     } catch (e) {
       if (e is DioException) {
         print('DioException: ${e.message}');
-        return Left(ServerFailures.fromDioException(e));
+        return Left(DioHandlerFailures.fromDioException(e));
       } else {
         print('Unexpected error: ${e.toString()}');
-        return Left(ServerFailures(errorMessage: e.toString()));
+        return Left(DioHandlerFailures(errorMessage: e.toString()));
       }
     }
   }
