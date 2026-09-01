@@ -5,20 +5,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/cache/cache_helper.dart';
 import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_theme.dart';
-import 'package:parking/features/map/data/test.dart';
+import 'package:parking/features/map/data/repos/overpass_spots_imple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   await CacheHelper.initInstace();
-  await Test().fetchSpots();
 
   await dotenv.load(fileName: '.env');
   await Supabase.initialize(
     url: dotenv.env['SUPABASE_URL']!,
     publishableKey: dotenv.env['SUPABASE_ANON_KEY'],
   );
+  await OverpassSpotsImple().fetchOverpassGetSpots();
+
   runApp(const ParkingApp());
 }
 

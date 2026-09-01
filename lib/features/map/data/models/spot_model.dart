@@ -1,30 +1,31 @@
 import 'package:geolocator/geolocator.dart';
 
-class ParkingSpot {
+class SpotModel {
   final String? id; // Supabase row id (uuid), null for new/unsaved spots
-  final String? osmId; // e.g. "node_123456" or "way_789012", null if manually added
+  final String?
+  osmId; // e.g. "node_123456" or "way_789012", null if manually added
   final String name;
   final double lat;
   final double lng;
 
-  // --- Fields that may come from OSM (nullable — often missing) 
+  // --- Fields that may come from OSM (nullable — often missing)
   final String? capacity;
   final String? capacityDisabled;
   final String? openingHours;
   final String? phone;
   final String? website;
 
-  // --- Fields you add/manage yourself (not available in OSM) ---
+  // Fields not available in OSM
   final double? priceForHour;
   final double? priceForDay;
   final String? address;
-  final double? rate; 
+  final double? rate;
   final int numOfReviews;
   final List<String> images;
-  final String type; //  'garage', 'street', 'lot', 'multi-storey'
-  final String? noteDirection; // free-text directions/notes
+  final String type; //  'garage', 'street'
+  final String? noteDirection;
 
-  const ParkingSpot({
+  const SpotModel({
     this.id,
     this.osmId,
     required this.name,
@@ -46,7 +47,7 @@ class ParkingSpot {
   });
 
   // Parsing from an Overpass API element (raw OSM data)
-  factory ParkingSpot.fromOverpassElement(Map<String, dynamic> element) {
+  factory SpotModel.fromOverpassElement(Map<String, dynamic> element) {
     // Nodes have 'lat'/'lon' directly; ways/relations return a 'center'
     final center = element['center'] as Map<String, dynamic>?;
     final double spotLat = (element['lat'] ?? center?['lat'])?.toDouble();
@@ -54,7 +55,7 @@ class ParkingSpot {
 
     final tags = element['tags'] as Map<String, dynamic>?;
 
-    return ParkingSpot(
+    return SpotModel(
       osmId: '${element['type']}_${element['id']}',
       name: tags?['name'] ?? 'Parking',
       lat: spotLat,
@@ -64,12 +65,13 @@ class ParkingSpot {
       openingHours: tags?['opening_hours'],
       phone: tags?['phone'],
       website: tags?['website'],
-      type: tags?['parking'] ?? 'unknown', // surface / multi-storey / underground
+      type:
+          tags?['parking'] ?? 'unknown', // surface / multi-storey / underground
     );
   }
 
-  factory ParkingSpot.fromSupabase(Map<String, dynamic> json) {
-    return ParkingSpot(
+  factory SpotModel.fromSupabase(Map<String, dynamic> json) {
+    return SpotModel(
       id: json['id'],
       osmId: json['osm_id'],
       name: json['name'] ?? 'Parking',
@@ -85,13 +87,14 @@ class ParkingSpot {
       address: json['address'],
       rate: (json['rate'] as num?)?.toDouble(),
       numOfReviews: json['num_of_reviews'] ?? 0,
-      images: json['images'] != null ? List<String>.from(json['images']) : const [],
+      images: json['images'] != null
+          ? List<String>.from(json['images'])
+          : const [],
       type: json['type'] ?? 'unknown',
       noteDirection: json['note_direction'],
     );
   }
 
-  
   // Converting to JSON for Supabase insert/upsert
   Map<String, dynamic> toJson() {
     return {
@@ -126,8 +129,8 @@ class ParkingSpot {
     ); // returns distance in meters
   }
 
-  // Convenience copyWith for updating a spot (e.g. after user edits it)
-  ParkingSpot copyWith({
+  // Convenience copyWith for updating a spot ( after user edits it)
+  SpotModel copyWith({
     String? id,
     String? osmId,
     String? name,
@@ -141,14 +144,13 @@ class ParkingSpot {
     double? priceForHour,
     double? priceForDay,
     String? address,
-    String? status,
     double? rate,
     int? numOfReviews,
     List<String>? images,
     String? type,
     String? noteDirection,
   }) {
-    return ParkingSpot(
+    return SpotModel(
       id: id ?? this.id,
       osmId: osmId ?? this.osmId,
       name: name ?? this.name,
