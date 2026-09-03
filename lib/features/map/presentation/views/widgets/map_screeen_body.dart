@@ -1,5 +1,4 @@
 import 'dart:developer' show log;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,9 +7,9 @@ import 'package:latlong2/latlong.dart';
 import 'package:parking/core/utils/widgets/custom_floating_action_buttons.dart';
 import 'package:parking/features/map/presentation/views/widgets/rounded_sheet_content.dart';
 import 'package:parking/features/map/presentation/views/widgets/search_text_field.dart';
+
 class MapScreenBody extends StatefulWidget {
   const MapScreenBody({super.key});
-
 
   @override
   State<MapScreenBody> createState() => _MapScreenBodyState();
@@ -25,6 +24,7 @@ class _MapScreenBodyState extends State<MapScreenBody> {
 
   @override
   void initState() {
+
     super.initState();
     _getCurrentLocation();
   }

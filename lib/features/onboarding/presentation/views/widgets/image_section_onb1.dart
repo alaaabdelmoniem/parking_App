@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/features/onboarding/presentation/views/widgets/header.dart';
 
 class ImageSection extends StatelessWidget {
   const ImageSection({super.key});

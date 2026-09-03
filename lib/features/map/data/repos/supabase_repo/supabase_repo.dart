@@ -3,5 +3,9 @@ import 'package:parking/core/errors/failure.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
 
 abstract class SupabaseRepo {
-  Future<Either<Failures, List<SpotModel>>> fetchSpotsFromSupaBase();
+  Future<Either<Failures, List<SpotModel>>> fetchSpotsFromSupaBase({
+    required double lat,
+    required double lng,
+    double radiusInDegrees = 0.02,
+  });
 }

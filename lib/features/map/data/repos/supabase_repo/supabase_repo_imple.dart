@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
-import 'package:parking/core/cache/cache_keys.dart';
 import 'package:parking/core/errors/failure.dart';
 import 'package:parking/core/errors/supabase_handler.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
@@ -9,11 +8,22 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseRepoImple implements SupabaseRepo {
   @override
-  Future<Either<Failures, List<SpotModel>>> fetchSpotsFromSupaBase() async {
-    final _supabase = Supabase.instance.client;
+  Future<Either<Failures, List<SpotModel>>> fetchSpotsFromSupaBase({
+    required double lat,
+    required double lng,
+    double radiusInDegrees = 0.02,
+  }) async {
+    final supabase = Supabase.instance.client;
 
     try {
-      final data = await _supabase.from(CacheKeys.parkingSpotsTable).select();
+      final data = await supabase
+          .from('parking_spots')
+          .select()
+          .gte('lat', lat - radiusInDegrees)
+          .lte('lat', lat + radiusInDegrees)
+          .gte('lng', lng - radiusInDegrees)
+          .lte('lng', lng + radiusInDegrees);
+
       final spots = data.map((json) => SpotModel.fromSupabase(json)).toList();
       return Right(spots);
     } on PostgrestException catch (e) {

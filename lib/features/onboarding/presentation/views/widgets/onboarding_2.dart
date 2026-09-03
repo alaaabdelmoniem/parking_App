@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/features/onboarding/presentation/views/widgets/content_onboarding2.dart';
-import 'package:parking/features/onboarding/presentation/views/widgets/header.dart';
 
 class Onboarding2 extends StatelessWidget {
   const Onboarding2({super.key});

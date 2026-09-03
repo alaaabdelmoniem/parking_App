@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:parking/features/map/data/models/spot_model.dart';
 import 'package:parking/features/map/presentation/manager/cubits/fetch_spots/fetch_spots_cubit.dart';
 import 'package:parking/features/map/presentation/views/widgets/header_draggable_sheet.dart';
 import 'package:parking/features/map/presentation/views/widgets/spot_nearby_item.dart';
@@ -56,7 +55,7 @@ class RoundedSheetContent extends StatelessWidget {
                       },
                       separatorBuilder: (context, index) =>
                           SizedBox(height: 4.h),
-                      itemCount: 7,
+                      itemCount: state.spots.length,
                     );
                   } else if (state is FetchSpotsLoading) {
                     return const SliverToBoxAdapter(

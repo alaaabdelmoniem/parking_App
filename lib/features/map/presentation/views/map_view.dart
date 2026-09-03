@@ -10,8 +10,11 @@ class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FetchSpotsCubit(supabaseRepo: SupabaseRepoImple())..fetchSpots(),
+      create: (context) =>
+          FetchSpotsCubit(supabaseRepo: SupabaseRepoImple())
+            ..fetchSpots(lat: 51.5074, lng: -0.1278),
       child: const Scaffold(body: MapScreenBody()),
     );
   }
 }
+

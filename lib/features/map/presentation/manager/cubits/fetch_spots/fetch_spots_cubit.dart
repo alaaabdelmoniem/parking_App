@@ -10,8 +10,8 @@ class FetchSpotsCubit extends Cubit<FetchSpotsState> {
 
   final SupabaseRepo supabaseRepo;
 
-  Future<void> fetchSpots() async {
-    var result = await supabaseRepo.fetchSpotsFromSupaBase()
+  Future<void> fetchSpots({required double lat, required double lng}) async {
+    var result = await supabaseRepo.fetchSpotsFromSupaBase(lat: lat, lng: lng)
       ..fold(
         (error) {
           emit(FetchSpotsError(errorMessage: error.errorMessage));
