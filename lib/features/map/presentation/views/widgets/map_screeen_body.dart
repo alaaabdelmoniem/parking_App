@@ -24,7 +24,6 @@ class _MapScreenBodyState extends State<MapScreenBody> {
 
   @override
   void initState() {
-
     super.initState();
     _getCurrentLocation();
   }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
-import 'package:parking/features/map/presentation/views/widgets/spot_nearby_item_details.dart';
+import 'package:parking/features/map/presentation/views/widgets/spot_nearby_item_details_with_contanier.dart';
 
-class SpotNearbyItem extends StatelessWidget {
-  const SpotNearbyItem({super.key, required this.spotModel});
+class SpotNearbyItemWithTimeLine extends StatelessWidget {
+  const SpotNearbyItemWithTimeLine({super.key, required this.spotModel});
   final SpotModel spotModel;
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class SpotNearbyItem extends StatelessWidget {
             ],
           ),
           SizedBox(width: 10.w),
-          Expanded(child: SpotNearbyItemDetails(spotModel: spotModel)),
+          Expanded(child: SpotNearbyItemWithContanier(spotModel: spotModel)),
         ],
       ),
     );

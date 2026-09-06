@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/cache/cache_helper.dart';
 import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_theme.dart';
 import 'package:parking/features/map/data/repos/overpass_repo/overpass_spots_imple.dart';
+import 'package:parking/features/map/data/repos/supabase_repo/supabase_repo_imple.dart';
+import 'package:parking/features/map/presentation/manager/cubits/fetch_spots/fetch_spots_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -30,11 +33,16 @@ class ParkingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(390, 1000),
-      child: MaterialApp.router(
-        title: 'parking',
-        theme: AppTheme.light,
-        routerConfig: AppRouter.router,
-        debugShowCheckedModeBanner: false,
+      child: BlocProvider(
+        create: (context) =>
+            FetchSpotsCubit(supabaseRepo: SupabaseRepoImple())
+              ..fetchSpots(lat: 51.5074, lng: -0.1278),
+        child: MaterialApp.router(
+          title: 'parking',
+          theme: AppTheme.light,
+          routerConfig: AppRouter.router,
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }

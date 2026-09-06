@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/features/map/presentation/manager/cubits/fetch_spots/fetch_spots_cubit.dart';
 import 'package:parking/features/map/presentation/views/widgets/header_draggable_sheet.dart';
-import 'package:parking/features/map/presentation/views/widgets/spot_nearby_item.dart';
+import 'package:parking/features/map/presentation/views/widgets/spot_nearby_item_with_TimeLine.dart';
 
 class RoundedSheetContent extends StatelessWidget {
   const RoundedSheetContent({super.key});
@@ -40,7 +42,10 @@ class RoundedSheetContent extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 12.h),
-                    const HeaderDraggableSheet(),
+                    HeaderDraggableSheet(
+                      onPressed: () =>
+                          GoRouter.of(context).push(AppRouter.kSeeAllView),
+                    ),
                     SizedBox(height: 17.h),
                   ],
                 ),
@@ -51,11 +56,15 @@ class RoundedSheetContent extends StatelessWidget {
                   if (state is FetchSpotsSuccess) {
                     return SliverList.separated(
                       itemBuilder: (context, index) {
-                        return SpotNearbyItem(spotModel: state.spots[index]);
+                        return SpotNearbyItemWithTimeLine(
+                          spotModel: state.spots[index],
+                        );
                       },
                       separatorBuilder: (context, index) =>
                           SizedBox(height: 4.h),
-                      itemCount: state.spots.length,
+                      itemCount: (state.spots.length < 5)
+                          ? state.spots.length
+                          : 6,
                     );
                   } else if (state is FetchSpotsLoading) {
                     return const SliverToBoxAdapter(

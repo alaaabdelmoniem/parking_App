@@ -11,6 +11,8 @@ class CustomPrice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+
         children: [
           Text.rich(
             maxLines: 1,
@@ -18,14 +20,7 @@ class CustomPrice extends StatelessWidget {
             TextSpan(
               children: [
                 TextSpan(
-                  text: r'$',
-                  style: AppTextStyle.monoPriceLarge.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                TextSpan(
-                  text: '${spotModel.priceForHour}',
-
+                  text: '\$${spotModel.priceForHour}',
                   style: AppTextStyle.monoPriceLarge.copyWith(
                     color: AppColors.textPrimary,
                   ),
@@ -40,18 +35,11 @@ class CustomPrice extends StatelessWidget {
               ],
             ),
           ),
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: r'$',
-                  style: AppTextStyle.body.copyWith(fontSize: 12.sp),
-                ),
-                TextSpan(
-                  text: '${spotModel.priceForDay}/day',
-                  style: AppTextStyle.body.copyWith(fontSize: 12.sp),
-                ),
-              ],
+          Text(
+            '\$${spotModel.priceForDay}/day',
+            style: AppTextStyle.bodySmall.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],

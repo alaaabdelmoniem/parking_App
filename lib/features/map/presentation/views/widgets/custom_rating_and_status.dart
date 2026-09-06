@@ -30,7 +30,7 @@ class CustomRatingAndStatus extends StatelessWidget {
             ),
           ),
           SizedBox(width: 7.w),
-          Icon(Icons.star, color: AppColors.rating, size: 18.r),
+          Icon(Icons.star, color: AppColors.rating, size: 18.sp),
           SizedBox(width: 1.w),
           Text(
             '${spotModel.rate}',

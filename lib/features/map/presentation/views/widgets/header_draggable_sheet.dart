@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 
 class HeaderDraggableSheet extends StatelessWidget {
-  const HeaderDraggableSheet({super.key});
-
+  const HeaderDraggableSheet({super.key, this.onPressed});
+ final void Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -26,9 +24,7 @@ class HeaderDraggableSheet extends StatelessWidget {
             minimumSize: Size.zero,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
-          onPressed: () {
-            GoRouter.of(context).push(AppRouter.kSeeAllView);
-          },
+          onPressed:onPressed,
 
           child: Text(
             'See All',
