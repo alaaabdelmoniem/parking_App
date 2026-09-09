@@ -5,7 +5,9 @@ import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
 import 'package:parking/features/map/presentation/manager/cubits/fetch_spots/fetch_spots_cubit.dart';
+import 'package:parking/features/map/presentation/views/widgets/custom_amenities_list_view.dart';
 import 'package:parking/features/map/presentation/views/widgets/custom_live_data.dart';
+import 'package:parking/features/map/presentation/views/widgets/custom_see_all_text_field.dart';
 import 'package:parking/features/map/presentation/views/widgets/parking_spot_details.dart';
 import 'package:parking/features/map/presentation/views/widgets/sort_dropdown_button.dart';
 
@@ -17,7 +19,6 @@ class SeeALlSpotsView extends StatefulWidget {
 }
 
 class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
-  int _selectedFilterIndex = 0;
   double _maxPrice = 15;
   String _selectedSort = 'Distance';
   String _searchQuery = '';
@@ -48,9 +49,7 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
       final matchesPrice =
           spot.priceForHour == null || spot.priceForHour! <= _maxPrice;
 
-      final matchesFilter = _selectedFilterIndex == 0;
-
-      return matchesSearch && matchesPrice && matchesFilter;
+      return matchesSearch && matchesPrice;
     }).toList();
 
     switch (_selectedSort) {
@@ -83,29 +82,10 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
           children: [
             Row(
               children: [
-                Expanded(
-                  child: TextField(
-                    style: AppTextStyle.body.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
-                    onChanged: (value) => setState(() => _searchQuery = value),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Search parking locations...',
-                      hintStyle: AppTextStyle.body.copyWith(
-                        color: AppColors.textTertiary,
-                      ),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        size: 20.sp,
-                        color: AppColors.textTertiary,
-                      ),
-                      prefixIconConstraints: BoxConstraints(
-                        minWidth: 40.w,
-                        minHeight: 20.h,
-                      ),
-                    ),
-                  ),
+                CustomSeeAllTextField(
+                  onChanged: (value) {
+                    setState(() => _searchQuery = value);
+                  },
                 ),
                 SizedBox(width: 10.w),
                 SortDropdownButton(
@@ -114,53 +94,9 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
                 ),
               ],
             ),
-
             SizedBox(height: 14.h),
-
-            SizedBox(
-              height: 40.h,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: _filters.length,
-                separatorBuilder: (_, _) => SizedBox(width: 8.w),
-                itemBuilder: (context, index) {
-                  final isSelected = index == _selectedFilterIndex;
-                  return GestureDetector(
-                    onTap: () => setState(() => _selectedFilterIndex = index),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 250),
-                      curve: Curves.easeInCubic,
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? AppColors.secondary
-                            : AppColors.surfaceMuted,
-                        borderRadius: BorderRadius.circular(20.r),
-                        border: Border.all(
-                          color: isSelected
-                              ? AppColors.secondary
-                              : AppColors.border,
-                        ),
-                      ),
-                      child: AnimatedDefaultTextStyle(
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeInOut,
-                        style: AppTextStyle.buttonSmall.copyWith(
-                          color: isSelected
-                              ? AppColors.textOnDark
-                              : AppColors.textSecondary,
-                        ),
-                        child: Text(_filters[index]),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-
+            const CustomAmenitiesListView(filters: _filters),
             SizedBox(height: 16.h),
-
             Row(
               children: [
                 Text(
@@ -200,9 +136,7 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
                 ),
               ],
             ),
-
             SizedBox(height: 12.h),
-
             Expanded(
               child: BlocBuilder<FetchSpotsCubit, FetchSpotsState>(
                 builder: (context, state) {
@@ -222,7 +156,6 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
                       ),
                     );
                   }
-
                   final allSpots = (state as FetchSpotsSuccess).spots;
                   final visibleSpots = _applyFiltersAndSort(allSpots);
                   return visibleSpots.isEmpty
