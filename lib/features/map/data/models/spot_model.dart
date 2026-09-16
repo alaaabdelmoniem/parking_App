@@ -1,4 +1,4 @@
-import 'package:geolocator/geolocator.dart';
+import 'package:geolocator_platform_interface/src/models/position.dart';
 
 class SpotModel {
   final String? id; // Supabase row id (uuid), null for new/unsaved spots
@@ -119,16 +119,6 @@ class SpotModel {
     };
   }
 
-  //  it must be calculated at runtime, not persisted in the database.
-  double distanceFrom(Position userPosition) {
-    return Geolocator.distanceBetween(
-      userPosition.latitude,
-      userPosition.longitude,
-      lat,
-      lng,
-    ); // returns distance in meters
-  }
-
   // Convenience copyWith for updating a spot ( after user edits it)
   SpotModel copyWith({
     String? id,
@@ -171,4 +161,6 @@ class SpotModel {
       noteDirection: noteDirection ?? this.noteDirection,
     );
   }
+
+  Object? distanceFrom(Position position) {}
 }

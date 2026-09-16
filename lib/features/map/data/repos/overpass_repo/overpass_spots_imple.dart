@@ -14,8 +14,8 @@ class OverpassSpotsImple implements OverpassGetSpots {
   final _supabase = Supabase.instance.client;
   @override
   Future<Either<Failures, void>> fetchOverpassGetSpots() async {
-const lat = 51.5074;
-const lng = -0.1278;
+    const lat = 38.9071933;
+    const lng = -77.0368726;
     const radius = 2000; // meters
 
     const query =
@@ -93,9 +93,9 @@ const lng = -0.1278;
           ? getRandomParkingName()
           : spot.name,
       noteDirection: spot.noteDirection ?? getRandomDirectionNote(),
-      priceForHour: spot.priceForHour ?? _randomPriceForHour(random),
-      priceForDay: spot.priceForDay ?? _randomPriceForDay(random),
-      rate: spot.rate ?? _randomRate(random),
+      priceForHour: spot.priceForHour ?? randomPriceForHour(random),
+      priceForDay: spot.priceForDay ?? randomPriceForDay(random),
+      rate: spot.rate ?? randomRate(random),
       openingHours: spot.openingHours ?? getRandomOpeningHours(),
       capacityDisabled: spot.capacityDisabled ?? getRandomCapacityDisabled(),
       type: (spot.type == 'unknown') ? getRandomType() : spot.type,
@@ -103,15 +103,10 @@ const lng = -0.1278;
           spot.address ??
           parkingAddresses[random.nextInt(parkingAddresses.length)],
       images: spot.images.isEmpty ? getRandomImages() : spot.images,
+      capacity: spot.capacity ?? getRandomCapacity().toString(),
+      numOfReviews: spot.numOfReviews == 0
+          ? getRandomNumOfReviews()
+          : spot.numOfReviews,
     );
   }
-
-  double _randomPriceForHour(Random random) =>
-      (random.nextInt(15) + 3).toDouble();
-
-  double _randomPriceForDay(Random random) =>
-      (random.nextInt(80) + 20).toDouble();
-
-  double _randomRate(Random random) =>
-      double.parse((random.nextDouble() * 2 + 3).toStringAsFixed(1));
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/utils/functions/get_current_postiones.dart';
+import 'package:parking/core/utils/functions/get_distance_and_time.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
 import 'package:parking/features/map/presentation/manager/cubits/fetch_spots/fetch_spots_cubit.dart';
 import 'package:parking/features/map/presentation/views/widgets/custom_amenities_list_view.dart';
@@ -23,6 +26,7 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
   String _selectedSort = 'Distance';
   String _searchQuery = '';
   final _searchController = TextEditingController();
+  Position? _currentPosition;
 
   static const _filters = ['All', 'EV Charging', 'Covered', '24/7', 'Security'];
 
@@ -31,7 +35,15 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
     super.initState();
     BlocProvider.of<FetchSpotsCubit>(
       context,
-    ).fetchSpots(lat: 51.5074, lng: -0.1278);
+    ).fetchSpots(lat: 38.9071933, lng: -77.0368726);
+    _getPosition();
+  }
+
+  Future<void> _getPosition() async {
+    final position = await getCurrentLocation();
+    if (mounted) {
+      setState(() => _currentPosition = position);
+    }
   }
 
   @override
@@ -62,7 +74,22 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
         result.sort((a, b) => (b.rate ?? 0).compareTo(a.rate ?? 0));
         break;
       case 'Distance':
+        if (_currentPosition != null) {
+          result.sort((a, b) {
+            final disA = getDistanceFrom(_currentPosition!, a.lat, a.lng);
+            final disB = getDistanceFrom(_currentPosition!, b.lat, b.lng);
+            return disB.compareTo(disA);
+          });
+        }
+        break;
       case 'Availability':
+        result.sort((a, b) {
+          final capA = int.tryParse(a.capacity ?? '0') ?? 0;
+          final capB = int.tryParse(b.capacity ?? '0') ?? 0;
+
+          return capB.compareTo(capA);
+        });
+        break;
       default:
         // Distance/Availability sorting can be added once those values
         // are computed (distanceFrom requires the user's live position).

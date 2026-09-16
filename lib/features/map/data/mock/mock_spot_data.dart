@@ -182,3 +182,23 @@ List<String> getRandomImages({int count = 3}) {
   final shuffled = List<String>.from(parkingImages)..shuffle();
   return shuffled.take(count).toList();
 }
+
+
+  double randomPriceForHour(Random random) =>
+      (random.nextInt(15) + 3).toDouble();
+
+  double randomPriceForDay(Random random) =>
+      (random.nextInt(80) + 20).toDouble();
+
+  double randomRate(Random random) =>
+      double.parse((random.nextDouble() * 2 + 3).toStringAsFixed(1));
+
+  int getRandomCapacity() {
+    final random = Random();
+    return random.nextInt(111) + 10;
+  }
+
+  int getRandomNumOfReviews() {
+    final random = Random();
+    return random.nextInt(2984) + 17;
+  }

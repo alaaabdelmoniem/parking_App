@@ -116,7 +116,7 @@ class AppTextStyle {
   /// Secondary button / pill label — "Cancel", "Modify", tab labels
   static TextStyle buttonSmall = TextStyle(
     fontFamily: _sans,
-    fontSize: 13.sp,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w600,
   );
 

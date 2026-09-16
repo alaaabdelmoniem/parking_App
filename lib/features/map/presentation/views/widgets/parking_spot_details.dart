@@ -15,11 +15,15 @@ class ParkingSpotDetails extends StatelessWidget {
   });
   final SpotModel spotModel;
   final bool amenity;
+
   @override
   Widget build(BuildContext context) {
+   
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).push(AppRouter.kSpotDetailsView, extra: spotModel);
+        GoRouter.of(
+          context,
+        ).push(AppRouter.kSpotDetailsView, extra: spotModel);
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

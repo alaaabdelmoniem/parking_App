@@ -44,7 +44,7 @@ class RoundedSheetContent extends StatelessWidget {
                     SizedBox(height: 12.h),
                     HeaderDraggableSheet(
                       onPressed: () =>
-                          GoRouter.of(context).push(AppRouter.kSeeAllView),
+                      GoRouter.of(context).push(AppRouter.kSeeAllView),
                     ),
                     SizedBox(height: 17.h),
                   ],

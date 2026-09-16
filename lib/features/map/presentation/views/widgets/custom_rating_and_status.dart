@@ -2,13 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/utils/widgets/spot_status_info.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
 
 class CustomRatingAndStatus extends StatelessWidget {
-  const CustomRatingAndStatus({super.key, required this.spotModel});
+  const CustomRatingAndStatus({
+    super.key,
+    required this.spotModel,
+    required this.maxCap,
+  });
   final SpotModel spotModel;
+  final int maxCap;
   @override
   Widget build(BuildContext context) {
+    var cap = (int.tryParse(spotModel.capacity ?? '0') ?? 0);
+    var statusInfo = getSpotStatus(
+      availableSpots: cap,
+      totalCapacity: cap > 100 ? cap + 10 : 100,
+    );
     return FittedBox(
       fit: BoxFit.scaleDown,
       alignment: Alignment.centerLeft,
@@ -22,9 +33,9 @@ class CustomRatingAndStatus extends StatelessWidget {
             ),
             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
             child: Text(
-              'Filling up · 23/120',
+              '${statusInfo.label} · ${spotModel.capacity}/$maxCap',
               style: AppTextStyle.pill.copyWith(
-                color: AppColors.warning,
+                color: statusInfo.color,
                 fontSize: 17.sp,
               ),
             ),

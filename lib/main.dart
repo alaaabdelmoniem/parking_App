@@ -36,7 +36,7 @@ class ParkingApp extends StatelessWidget {
       child: BlocProvider(
         create: (context) =>
             FetchSpotsCubit(supabaseRepo: SupabaseRepoImple())
-              ..fetchSpots(lat: 51.5074, lng: -0.1278),
+              ..fetchSpots(lat: 38.9071933, lng: -77.0368726),
         child: MaterialApp.router(
           title: 'parking',
           theme: AppTheme.light,

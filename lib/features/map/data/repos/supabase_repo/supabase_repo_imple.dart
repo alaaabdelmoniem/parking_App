@@ -11,7 +11,7 @@ class SupabaseRepoImple implements SupabaseRepo {
   Future<Either<Failures, List<SpotModel>>> fetchSpotsFromSupaBase({
     required double lat,
     required double lng,
-    double radiusInDegrees = 0.02,
+    double radiusInDegrees = 0.01,
   }) async {
     final supabase = Supabase.instance.client;
 
