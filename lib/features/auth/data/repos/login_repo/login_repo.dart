@@ -9,4 +9,6 @@ abstract class LoginRepo {
   });
 
   Future<Either<Failures, void>> loginWithFacebook();
+    Future<Either<Failures, void>> loginWithGoogle();
+
 }

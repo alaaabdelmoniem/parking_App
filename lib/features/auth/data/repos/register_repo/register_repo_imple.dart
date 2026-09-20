@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:parking/core/errors/failure.dart';
 import 'package:parking/core/errors/supabase_handler.dart';
@@ -39,6 +38,24 @@ class RegisterRepoImple implements RegisterRepo {
     try {
       await _supabase.auth.signInWithOAuth(
         OAuthProvider.facebook,
+        redirectTo: authRedirectUrl,
+      );
+      return const Right(null);
+    } catch (e) {
+      if (e is AuthException) {
+        return Left(AuthFailure.fromAuthException(exception: e));
+      } else {
+        log(e.toString());
+        return Left(ServerFailures.fromException(e));
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failures, void>> registerWithGoogle() async {
+    try {
+      await _supabase.auth.signInWithOAuth(
+        OAuthProvider.google,
         redirectTo: authRedirectUrl,
       );
       return const Right(null);

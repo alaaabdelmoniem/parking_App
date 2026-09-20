@@ -56,4 +56,21 @@ class LoginRepoImple implements LoginRepo {
       }
     }
   }
+   @override
+  Future<Either<Failures, void>> loginWithGoogle() async {
+    try {
+      await _supabase.auth.signInWithOAuth(
+        OAuthProvider.google,
+        redirectTo: authRedirectUrl,
+      );
+      return const Right(null);
+    } catch (e) {
+      if (e is AuthException) {
+        return Left(AuthFailure.fromAuthException(exception: e));
+      } else {
+        log(e.toString());
+        return Left(ServerFailures.fromException(e));
+      }
+    }
+  }
 }

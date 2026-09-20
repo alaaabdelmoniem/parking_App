@@ -10,4 +10,6 @@ abstract class RegisterRepo {
   });
 
   Future<Either<Failures, void>> registerWithFacebook();
+    Future<Either<Failures, void>> registerWithGoogle();
+
 }
