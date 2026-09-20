@@ -70,6 +70,16 @@
 <string>This app needs access to your location to show local content.</string>
 <key>NSLocationAlwaysUsageDescription</key>
 <string>This app needs continuous location access to track your route.</string>
-
+<key>CFBundleURLTypes</key>
+<array>
+	<dict>
+		<key>CFBundleURLName</key>
+		<string>io.supabase.parking</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>io.supabase.parking</string>
+		</array>
+	</dict>
+</array>
 </dict>
 </plist>
