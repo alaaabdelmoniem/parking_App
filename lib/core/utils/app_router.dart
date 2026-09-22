@@ -1,7 +1,10 @@
+import 'dart:collection';
+
 import 'package:go_router/go_router.dart';
 import 'package:parking/features/auth/presentation/views/login_view.dart';
 import 'package:parking/features/auth/presentation/views/signup_view.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
+import 'package:parking/features/map/presentation/views/map_view.dart';
 import 'package:parking/features/map/presentation/views/see_all_view.dart';
 import 'package:parking/features/map/presentation/views/spot_details_view.dart';
 import 'package:parking/features/onboarding/presentation/views/onboarding_view.dart';
@@ -12,6 +15,7 @@ abstract class AppRouter {
   static const kSignupView = '/signup_view';
   static const kSeeAllView = '/SeeALlSpotsView';
   static const kSpotDetailsView = '/spotDetailsView';
+  static const kMapView = '/Map_view';
   static final router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SignUpView()),
@@ -28,6 +32,7 @@ abstract class AppRouter {
         path: kSeeAllView,
         builder: (context, state) => const SeeALlSpotsView(),
       ),
+      GoRoute(path: kMapView, builder: (context, state) =>  MapScreen()),
       GoRoute(
         path: kSpotDetailsView,
         builder: (context, state) {

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_text_style.dart';
-import 'package:parking/features/auth/presentation/views/widgets/animated_auth_button.dart';
+import 'package:parking/core/utils/widgets/morphing_loading_button.dart';
+import 'package:parking/features/auth/presentation/manager/cubits/register_with_email/register_with_email_cubit.dart';
+import 'package:parking/features/auth/presentation/manager/cubits/register_with_google/register_with_google_cubit.dart';
 import 'package:parking/features/auth/presentation/views/widgets/email_text_field.dart';
 import 'package:parking/features/auth/presentation/views/widgets/password_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
-import 'package:parking/features/auth/presentation/views/widgets/social_row.dart';
+import 'package:parking/features/auth/presentation/views/widgets/register_social_row.dart';
 
 class SignupViewBody extends StatefulWidget {
   const SignupViewBody({super.key});
@@ -18,11 +21,10 @@ class SignupViewBody extends StatefulWidget {
 }
 
 class _SignupViewBodyState extends State<SignupViewBody> {
-  final GlobalKey formkey = GlobalKey();
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final nameController = TextEditingController();
-
   @override
   void dispose() {
     nameController.dispose();
@@ -37,7 +39,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Form(
-        key: formkey,
+        key: _formkey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -128,11 +130,48 @@ class _SignupViewBodyState extends State<SignupViewBody> {
             PasswordTextField(controller: passwordController),
             SizedBox(height: 24.h),
 
-            AnimatedAuthButton(onPressed: () {}, text: 'Sign up'),
+            BlocConsumer<RegisterWithEmailCubit, RegisterWithEmailState>(
+              listener: (context, state) {
+                if (state is RegisterWithEmailFailure) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                }
+
+                if (state is RegisterWithEmailSuccess) {
+                  GoRouter.of(context).pushReplacement(AppRouter.kMapView);
+                }
+              },
+
+              builder: (context, state) {
+                final isLoading = state is RegisterWithEmailLoading;
+
+                return MorphingLoadingButton(
+                  isLoading: isLoading,
+                  text: 'Sign up',
+                  onPressed: () {
+                    BlocProvider.of<RegisterWithEmailCubit>(
+                      context,
+                    ).registerWithEmailAndPassword(
+                      email: emailController.text,
+                      password: passwordController.text,
+                      fullName: nameController.text,
+                    );
+                  },
+                );
+              },
+            ),
 
             SizedBox(height: 20.h),
 
-            const SocialRow(),
+            RegisterSocialRow(
+              googleOnTap: () {
+                BlocProvider.of<RegisterWithGoogleCubit>(
+                  context,
+                ).registerWithGoogle();
+              },
+              facebookOnTap: () {},
+            ),
 
             SizedBox(height: 28.h),
             Center(

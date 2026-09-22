@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:parking/core/utils/app_colors.dart';
+import 'package:parking/features/auth/presentation/manager/cubits/register_with_google/register_with_google_cubit.dart';
+import 'package:parking/features/auth/presentation/views/widgets/social_circle.dart';
 
-class SocialRow extends StatelessWidget {
-  const SocialRow({super.key});
-
+class RegisterSocialRow extends StatelessWidget {
+  const RegisterSocialRow({
+    super.key,
+    required this.googleOnTap,
+    required this.facebookOnTap,
+  });
+  final void Function() googleOnTap;
+  final void Function() facebookOnTap;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,16 +32,34 @@ class SocialRow extends StatelessWidget {
           ],
         ),
         SizedBox(height: 20.h),
+
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
+
           children: [
-            SocialCircle(
-              icon: FaIcon(
-                FontAwesomeIcons.google,
-                color: const Color(0xFFEA4335),
-                size: 19.sp,
-              ),
-              onTap: () {},
+            BlocConsumer<RegisterWithGoogleCubit, RegisterWithGoogleState>(
+              listener: (context, state) {
+                if (state is RegisterWithGoogleLoading) {
+                  //TODO:show animation on dialog
+                }
+                if (state is RegisterWithGoogleFailure) {
+                  //TODO: show with toast instead of snackbar
+
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                }
+              },
+              builder: (context, state) {
+                return SocialCircle(
+                  icon: FaIcon(
+                    FontAwesomeIcons.google,
+                    color: const Color(0xFFEA4335),
+                    size: 19.sp,
+                  ),
+                  onTap: googleOnTap,
+                );
+              },
             ),
             const SizedBox(width: 18),
             SocialCircle(
@@ -56,32 +82,6 @@ class SocialRow extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-}
-
-class SocialCircle extends StatelessWidget {
-  final Widget icon;
-  final VoidCallback onTap;
-
-  const SocialCircle({super.key, required this.icon, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(30),
-      onTap: onTap,
-      child: Container(
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          border: Border.all(color: const Color(0xFFE3E5EC)),
-        ),
-        alignment: Alignment.center,
-        child: icon,
-      ),
     );
   }
 }
