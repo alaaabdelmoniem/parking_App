@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parking/core/utils/app_colors.dart';
+import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
 
 class BookButtonSection extends StatelessWidget {
   const BookButtonSection({super.key, required this.spotModel});
   final SpotModel spotModel;
-
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,9 @@ class BookButtonSection extends StatelessWidget {
           Divider(color: AppColors.textBody.withValues(alpha: .2)),
           SizedBox(height: 10.h),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              GoRouter.of(context).push(AppRouter.kSummaryBookingView);
+            },
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.primary,
