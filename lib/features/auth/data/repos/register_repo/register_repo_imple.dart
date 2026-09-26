@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
+import 'package:parking/core/cache/cache_helper.dart';
+import 'package:parking/core/cache/cache_keys.dart';
 import 'package:parking/core/errors/failure.dart';
 import 'package:parking/core/errors/supabase_handler.dart';
 import 'package:parking/core/utils/constants.dart';
@@ -16,10 +18,14 @@ class RegisterRepoImple implements RegisterRepo {
     required String fullName,
   }) async {
     try {
-      await _supabase.auth.signUp(
+      final response = await _supabase.auth.signUp(
         email: email,
         password: password,
         data: {'full_name': fullName},
+      );
+      await CacheHelper.setValue(
+        key: CacheKeys.uId,
+        value: response.user?.id ?? '',
       );
 
       return const Right(null);

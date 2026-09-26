@@ -3,21 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
-import 'package:parking/features/map/presentation/views/widgets/reserve_aspot.dart';
 
 class BookButtonSection extends StatelessWidget {
   const BookButtonSection({super.key, required this.spotModel});
   final SpotModel spotModel;
-  void showSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return const ReserveASpot();
-      },
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +65,7 @@ class BookButtonSection extends StatelessWidget {
           Divider(color: AppColors.textBody.withValues(alpha: .2)),
           SizedBox(height: 10.h),
           GestureDetector(
-            onTap: () => showSheet(context),
+            onTap: () {},
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.primary,

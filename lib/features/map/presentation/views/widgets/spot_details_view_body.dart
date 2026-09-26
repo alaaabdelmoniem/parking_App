@@ -11,6 +11,7 @@ import 'package:parking/features/map/presentation/views/widgets/Space_Befor_sect
 import 'package:parking/features/map/presentation/views/widgets/Spot_details_view_details_section.dart';
 import 'package:parking/features/map/presentation/views/widgets/amenities_section.dart';
 import 'package:parking/features/map/presentation/views/widgets/book_button_section.dart';
+import 'package:parking/features/map/presentation/views/widgets/booking_window_section.dart';
 import 'package:parking/features/map/presentation/views/widgets/rating_break_down_section.dart';
 import 'package:parking/features/map/presentation/views/widgets/see_all_reviews_button.dart';
 import 'package:parking/features/map/presentation/views/widgets/space_avilability.dart';
@@ -72,6 +73,11 @@ class _SpotDetailsViewBodyState extends State<SpotDetailsViewBody> {
                       totalCap: mxava > 100 ? mxava + 10 : 100,
                     ),
                     SizedBox(height: 7.h),
+                    const SpaceBeforSectionTitle(),
+
+                    const BookingWindowSection(
+                      cancelUntilText: 'Oct 02, 17:00',
+                    ),
                     const SpaceBeforSectionTitle(),
                     const AmenitiesSection(),
                     const SpaceBeforSectionTitle(),

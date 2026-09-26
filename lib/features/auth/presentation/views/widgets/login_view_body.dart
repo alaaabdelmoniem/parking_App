@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -82,7 +84,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
               ),
             ),
             SizedBox(height: 8.h),
-            const EmailTextField(),
+            EmailTextField(controller: emailController),
             SizedBox(height: 18.h),
 
             //password section
@@ -94,7 +96,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
               ),
             ),
             SizedBox(height: 8.h),
-            const PasswordTextField(),
+            PasswordTextField(controller: passwordController),
             SizedBox(height: 10.h),
 
             //forget password
@@ -139,12 +141,17 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                   isLoading: isLoading,
                   text: 'Log in',
                   onPressed: () {
-                    BlocProvider.of<LoginWithEmailCubit>(
-                      context,
-                    ).loginWithEmailAndPassword(
-                      email: emailController.text,
-                      password: passwordController.text,
-                    );
+                    if (_formkey.currentState!.validate()) {
+                      log(
+                        '${emailController.text} ,pass: ${passwordController.text}',
+                      );
+                      BlocProvider.of<LoginWithEmailCubit>(
+                        context,
+                      ).loginWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      );
+                    }
                   },
                 );
               },

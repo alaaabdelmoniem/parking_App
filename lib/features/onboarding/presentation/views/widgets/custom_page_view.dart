@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:parking/core/cache/cache_helper.dart';
+import 'package:parking/core/cache/cache_keys.dart';
 import 'package:parking/core/utils/app_colors.dart';
+import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/features/onboarding/presentation/views/widgets/header.dart';
 import 'package:parking/features/onboarding/presentation/views/widgets/onboarding_1.dart';
 import 'package:parking/features/onboarding/presentation/views/widgets/onboarding_2.dart';
@@ -38,6 +44,10 @@ class _CustomPageViewState extends State<CustomPageView> {
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOutCubic,
       );
+    }
+    if (currentIndex == screens.length - 1) {
+        GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+      
     }
   }
 

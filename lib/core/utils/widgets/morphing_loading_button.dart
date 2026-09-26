@@ -24,7 +24,7 @@ class MorphingLoadingButton extends StatelessWidget {
 
     return Center(
       child: GestureDetector(
-        onTap: isLoading ? null : onPressed,
+        onTap: isLoading ? null :onPressed,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeInOutCubic,

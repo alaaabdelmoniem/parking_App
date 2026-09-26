@@ -150,13 +150,15 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                   isLoading: isLoading,
                   text: 'Sign up',
                   onPressed: () {
-                    BlocProvider.of<RegisterWithEmailCubit>(
+                    if(_formkey.currentState!.validate()){
+                      BlocProvider.of<RegisterWithEmailCubit>(
                       context,
                     ).registerWithEmailAndPassword(
                       email: emailController.text,
                       password: passwordController.text,
                       fullName: nameController.text,
                     );
+                    }
                   },
                 );
               },
