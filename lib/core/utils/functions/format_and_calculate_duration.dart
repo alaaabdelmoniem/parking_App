@@ -14,17 +14,25 @@ Duration calculateDuration(TimeOfDay start, TimeOfDay end) {
   return Duration(minutes: diffMinutes);
 }
 
-String formatDuration(Duration duration) {
+Duration? getDurationBetwTwoDateTime({DateTime? startDateTime, DateTime? endDateTime}) {
+  if (startDateTime == null || endDateTime == null) {
+    return null;
+  }
+
+  if (endDateTime!.isBefore(startDateTime!)) {
+    return null; 
+  }
+
+  return endDateTime!.difference(startDateTime!);
+}
+
+String formatDuration(Duration? duration) {
+  if (duration == null) return '--';
+
   final hours = duration.inHours;
   final minutes = duration.inMinutes % 60;
 
-  if (hours == 0) {
-    return '${minutes}m';
-  }
-
-  if (minutes == 0) {
-    return '${hours}h';
-  }
-
+  if (hours == 0) return '${minutes}m';
+  if (minutes == 0) return '${hours}h';
   return '${hours}h ${minutes}m';
 }

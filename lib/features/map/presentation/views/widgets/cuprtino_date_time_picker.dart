@@ -57,7 +57,7 @@ Future<DateTime?> showCupertinoDateTimePicker(
                 mode: CupertinoDatePickerMode.dateAndTime,
                 initialDateTime: safeInitialDateTime,
                 minimumDate: now,
-                use24hFormat: false,
+                use24hFormat: true,
                 onDateTimeChanged: (value) {
                   pickedDateTime = value;
                 },

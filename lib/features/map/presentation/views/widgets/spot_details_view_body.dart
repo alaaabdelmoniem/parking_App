@@ -2,16 +2,24 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parking/core/utils/app_colors.dart';
+import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/utils/functions/date_formats.dart';
+import 'package:parking/core/utils/functions/format_and_calculate_duration.dart';
 import 'package:parking/core/utils/functions/get_current_postiones.dart';
 import 'package:parking/core/utils/functions/get_distance_and_time.dart';
+import 'package:parking/core/utils/functions/show_snackbar_message.dart';
+import 'package:parking/features/map/data/models/book_model.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
 import 'package:parking/features/map/presentation/views/widgets/Space_Befor_section_title.dart';
 import 'package:parking/features/map/presentation/views/widgets/Spot_details_view_details_section.dart';
 import 'package:parking/features/map/presentation/views/widgets/amenities_section.dart';
 import 'package:parking/features/map/presentation/views/widgets/book_button_section.dart';
-import 'package:parking/features/map/presentation/views/widgets/booking_window_section.dart';
+import 'package:parking/features/map/presentation/views/widgets/cancel_banner.dart';
+import 'package:parking/features/map/presentation/views/widgets/cuprtino_date_time_picker.dart';
+import 'package:parking/features/map/presentation/views/widgets/custom_booking_date_and_time.dart';
 import 'package:parking/features/map/presentation/views/widgets/rating_break_down_section.dart';
 import 'package:parking/features/map/presentation/views/widgets/see_all_reviews_button.dart';
 import 'package:parking/features/map/presentation/views/widgets/space_avilability.dart';
@@ -40,6 +48,32 @@ class _SpotDetailsViewBodyState extends State<SpotDetailsViewBody> {
     log('work: $currentPosition');
   }
 
+  DateTime? _selectedStartDateTime;
+  DateTime? _selectedEndDateTime;
+
+
+  Future<void> _openStartTimePicker() async {
+    final result = await showCupertinoDateTimePicker(
+      context,
+      title: 'Start Time',
+      initialDateTime: _selectedStartDateTime,
+    );
+    if (result != null) {
+      setState(() => _selectedStartDateTime = result);
+    }
+  }
+
+  Future<void> _openEndTimePicker() async {
+    final result = await showCupertinoDateTimePicker(
+      context,
+      title: 'End Time',
+      initialDateTime: _selectedEndDateTime,
+    );
+    if (result != null) {
+      setState(() => _selectedEndDateTime = result);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double dis = (currentPosition != null)
@@ -50,6 +84,11 @@ class _SpotDetailsViewBodyState extends State<SpotDetailsViewBody> {
           )
         : 0;
     var mxava = (int.tryParse(widget.spotModel.capacity ?? '0') ?? 0);
+    final duration = getDurationBetwTwoDateTime(
+      startDateTime: _selectedStartDateTime,
+      endDateTime: _selectedEndDateTime,
+    );
+
     return Stack(
       children: [
         SingleChildScrollView(
@@ -75,8 +114,49 @@ class _SpotDetailsViewBodyState extends State<SpotDetailsViewBody> {
                     SizedBox(height: 7.h),
                     const SpaceBeforSectionTitle(),
 
-                    const BookingWindowSection(
-                      cancelUntilText: 'Oct 02, 17:00',
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: CustomBookingDateAndTime(
+                                  label: 'Enter After',
+                                  dateText: formatDateTime(
+                                    _selectedStartDateTime,
+                                  ),
+                                  onChange: _openStartTimePicker,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                child: VerticalDivider(
+                                  color: AppColors.textBody.withValues(
+                                    alpha: .1,
+                                  ),
+                                  thickness: 1,
+                                  width: 1,
+                                ),
+                              ),
+                              Expanded(
+                                child: CustomBookingDateAndTime(
+                                  label: 'Exit Before',
+                                  dateText: formatDateTime(
+                                    _selectedEndDateTime,
+                                  ),
+                                  onChange: _openEndTimePicker,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 18.h),
+                        const CancelPolicyBanner(
+                          text: 'Cancel until Oct 1 at 17:00',
+                        ),
+                      ],
                     ),
                     const SpaceBeforSectionTitle(),
                     const AmenitiesSection(),
@@ -114,7 +194,30 @@ class _SpotDetailsViewBodyState extends State<SpotDetailsViewBody> {
           bottom: 0,
           left: 0,
           right: 0,
-          child: BookButtonSection(spotModel: widget.spotModel),
+          child: BookButtonSection(
+            onTap: () {
+              if (_selectedStartDateTime != null &&
+                  _selectedEndDateTime != null) {
+                GoRouter.of(context).push(
+                  AppRouter.kSummaryBookingView,
+                  extra: BookModel(
+                    startTime: _selectedStartDateTime!,
+                    endTime: _selectedEndDateTime!,
+                    duration: duration?.inHours ?? 0,
+                    spotModel: widget.spotModel,
+                  ),
+                );
+              } else {
+                showSnackbarMessage(
+                  context,
+                  content: const Text('please enter time after enter'),
+                  color: AppColors.errorBright,
+                );
+              }
+            },
+            spotModel: widget.spotModel,
+            duration: duration?.inHours ?? 0,
+          ),
         ),
       ],
     );

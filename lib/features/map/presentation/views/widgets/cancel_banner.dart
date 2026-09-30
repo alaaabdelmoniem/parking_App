@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
@@ -13,15 +12,20 @@ class CancelPolicyBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: AppColors.warningPale,
         borderRadius: BorderRadius.circular(18.r),
       ),
+      margin: EdgeInsets.symmetric(horizontal: 10.w),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.warning_rounded, color: AppColors.warning, size: 20.sp),
+          Icon(
+            Icons.warning_rounded,
+            color: AppColors.warning.withValues(alpha: .85),
+            size: 22.sp,
+          ),
           SizedBox(width: 10.w),
           Expanded(
             child: Text(
@@ -30,6 +34,7 @@ class CancelPolicyBanner extends StatelessWidget {
                 color: AppColors.textPrimary.withValues(alpha: .7),
                 fontWeight: FontWeight.w600,
                 height: 1,
+                fontSize: 11.sp,
               ),
             ),
           ),

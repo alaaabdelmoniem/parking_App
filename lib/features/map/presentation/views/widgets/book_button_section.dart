@@ -7,9 +7,14 @@ import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
 
 class BookButtonSection extends StatelessWidget {
-  const BookButtonSection({super.key, required this.spotModel});
+  const BookButtonSection({
+    super.key,
+    required this.spotModel,
+    required this.duration, this.onTap,
+  });
   final SpotModel spotModel;
-
+  final int duration;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +37,7 @@ class BookButtonSection extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '${spotModel.priceForHour}',
+                      text: '${(spotModel.priceForHour)! * duration}',
                       style: AppTextStyle.monoPriceLarge.copyWith(
                         color: AppColors.textPrimary,
                         fontSize: 21.sp,
@@ -66,9 +71,7 @@ class BookButtonSection extends StatelessWidget {
           Divider(color: AppColors.textBody.withValues(alpha: .2)),
           SizedBox(height: 10.h),
           GestureDetector(
-            onTap: () {
-              GoRouter.of(context).push(AppRouter.kSummaryBookingView);
-            },
+            onTap: onTap,
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.primary,
