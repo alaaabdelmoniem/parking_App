@@ -3,13 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parking/core/utils/app_colors.dart';
+import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/core/utils/functions/date_formats.dart';
 import 'package:parking/core/utils/functions/get_current_postiones.dart';
 import 'package:parking/core/utils/functions/get_distance_and_time.dart';
+import 'package:parking/features/map/data/models/book_model.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
 import 'package:parking/features/map/presentation/views/widgets/Space_Befor_section_title.dart';
+import 'package:parking/features/map/presentation/views/widgets/booking_widgets/reservation_tips.dart';
 import 'package:parking/features/map/presentation/views/widgets/custom_distance_and_reviews_row.dart';
 
 class SpotSummarySection extends StatefulWidget {
@@ -135,7 +139,7 @@ class _SpotSummarySectionState extends State<SpotSummarySection> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Enter After',
+                              'Exit Before',
                               style: AppTextStyle.body.copyWith(
                                 color: AppColors.textSecondary,
                                 fontWeight: FontWeight.w500,
@@ -160,88 +164,9 @@ class _SpotSummarySectionState extends State<SpotSummarySection> {
                 const SpaceBeforSectionTitle(),
                 SizedBox(height: 30.h),
 
-                Text(
-                  'PROMO CODE',
-                  style: AppTextStyle.sectionTitle.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                const Text('If you have promo code pleae enter it below'),
-                SizedBox(height: 20.h),
+                const ReservationTips(),
 
-                Text(
-                  'ENTER PROMO CODE',
-                  style: AppTextStyle.sectionTitle.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                TextField(
-                  cursorColor: AppColors.textSecondary,
-                  cursorHeight: 35.h,
-                  cursorWidth: 1,
-
-                  decoration: const InputDecoration(
-                    isDense: false,
-                    contentPadding: EdgeInsets.zero,
-                    filled: false,
-                    enabledBorder: UnderlineInputBorder(),
-                    focusedBorder: UnderlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 25.h),
-
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceMuted,
-                    borderRadius: BorderRadius.circular(16.r),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomSummaryItem(
-                        label: 'Parking fee',
-                        value: '\$${widget.spotModel.priceForHour}',
-                      ),
-                      SizedBox(height: 10.h),
-                      const CustomSummaryItem(
-                        label: 'Tax (8.75%)',
-                        value: '\$1.05',
-                      ),
-                      SizedBox(height: 10.h),
-                      const CustomSummaryItem(
-                        label: 'Member discount',
-                        value: '-\$2.50',
-                        valueColor: AppColors.success,
-                      ),
-                      SizedBox(height: 12.h),
-                      const Divider(color: AppColors.border),
-                      SizedBox(height: 12.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total',
-                            style: AppTextStyle.cardTitle.copyWith(
-                              color: AppColors.textPrimary,
-                              fontSize: 16.sp,
-                            ),
-                          ),
-                          Text(
-                            '\$${widget.spotModel.priceForDay! * widget.duration}',
-                            style: AppTextStyle.monoDisplay.copyWith(
-                              color: AppColors.primary,
-                              fontSize: 22.sp,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+               
               ],
             ),
           ),
@@ -257,7 +182,17 @@ class _SpotSummarySectionState extends State<SpotSummarySection> {
                   sizeStyle: CupertinoButtonSize.medium,
                   color: AppColors.primary,
                   borderRadius: BorderRadius.circular(20.r),
-                  onPressed: () {},
+                  onPressed: () {
+                    GoRouter.of(context).push(
+                      AppRouter.kCheckoutView,
+                      extra: BookModel(
+                        startTime: widget.startTime,
+                        endTime: widget.endTime,
+                        duration: widget.duration,
+                        spotModel: widget.spotModel,
+                      ),
+                    );
+                  },
                   child: Text(
                     'Checkout',
                     style: AppTextStyle.buttonSmall.copyWith(

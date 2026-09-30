@@ -1,10 +1,9 @@
-import 'dart:collection';
-
 import 'package:go_router/go_router.dart';
 import 'package:parking/features/auth/presentation/views/login_view.dart';
 import 'package:parking/features/auth/presentation/views/signup_view.dart';
 import 'package:parking/features/map/data/models/book_model.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
+import 'package:parking/features/map/presentation/views/checkout_view.dart';
 import 'package:parking/features/map/presentation/views/map_view.dart';
 import 'package:parking/features/map/presentation/views/see_all_view.dart';
 import 'package:parking/features/map/presentation/views/spot_details_view.dart';
@@ -20,6 +19,7 @@ abstract class AppRouter {
   static const kSpotDetailsView = '/spotDetailsView';
   static const kMapView = '/Map_view';
   static const kSummaryBookingView = '/summary_booking_view';
+  static const kCheckoutView = '/Checkout_View';
   static final router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashView()),
@@ -36,9 +36,18 @@ abstract class AppRouter {
           return SummaryBookingView(
             spotModel: bookingModel.spotModel,
             startTime: bookingModel.startTime,
-            endTime: bookingModel.startTime,
+            endTime: bookingModel.endTime,
             duration: bookingModel.duration,
           );
+        },
+      ),
+      GoRoute(
+        path: kCheckoutView,
+
+        builder: (context, state) {
+          final bookingModel = (state.extra) as BookModel;
+
+       return  CheckoutView(bookModel: bookingModel,);
         },
       ),
       GoRoute(

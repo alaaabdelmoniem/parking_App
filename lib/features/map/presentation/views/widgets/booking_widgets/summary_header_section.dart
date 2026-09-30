@@ -4,8 +4,8 @@ import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 
 class SummaryHeaderSection extends StatelessWidget {
-  const SummaryHeaderSection({super.key});
-
+  const SummaryHeaderSection({super.key, required this.text});
+  final String text;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -30,7 +30,7 @@ class SummaryHeaderSection extends StatelessWidget {
           ),
           SizedBox(width: 22.w),
           Text(
-            'Reservation summary',
+            text,
             style: AppTextStyle.sheetTitle.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w700,
