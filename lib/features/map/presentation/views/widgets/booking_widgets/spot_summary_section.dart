@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/utils/constants.dart';
 import 'package:parking/core/utils/functions/date_formats.dart';
 import 'package:parking/core/utils/functions/get_current_postiones.dart';
 import 'package:parking/core/utils/functions/get_distance_and_time.dart';
@@ -165,8 +166,6 @@ class _SpotSummarySectionState extends State<SpotSummarySection> {
                 SizedBox(height: 30.h),
 
                 const ReservationTips(),
-
-               
               ],
             ),
           ),
@@ -205,58 +204,6 @@ class _SpotSummarySectionState extends State<SpotSummarySection> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class CustomSummaryItem extends StatelessWidget {
-  const CustomSummaryItem({
-    super.key,
-    required this.label,
-    required this.value,
-    this.valueColor,
-  });
-  final String label;
-  final String value;
-  final Color? valueColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: AppTextStyle.bodySmall.copyWith(
-            color: AppColors.textSecondary,
-          ),
-        ),
-        Text(
-          value,
-          style: AppTextStyle.monoPrice.copyWith(
-            color: valueColor ?? AppColors.textPrimary,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class DividerBeforSummaryItem extends StatelessWidget {
-  const DividerBeforSummaryItem({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: 6.h),
-        Divider(
-          color: AppColors.textBody.withValues(alpha: .1),
-          endIndent: 50,
-          indent: 50,
-        ),
-        SizedBox(height: 6.h),
-      ],
     );
   }
 }

@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/features/map/data/models/book_model.dart';
-import 'package:parking/features/map/presentation/views/widgets/booking_widgets/spot_summary_section.dart';
+import 'package:parking/features/map/presentation/views/widgets/add_payment_button.dart';
+import 'package:parking/features/map/presentation/views/widgets/custom_summary_item.dart';
 import 'package:parking/features/map/presentation/views/widgets/payment_method_tile.dart';
 
 class CheckoutDetailsSection extends StatefulWidget {
@@ -73,6 +74,7 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
                 padding: EdgeInsets.only(left: 8.w, top: 10.h, bottom: 10.h),
                 decoration: BoxDecoration(
                   color: AppColors.card,
+                  border: Border.all(color: AppColors.border),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(8.r),
                     bottomRight: Radius.circular(8.r),
@@ -303,6 +305,8 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
           title: 'Apple Pay',
           subtitle: 'Instant one-touch biometric checkout',
         ),
+
+        AddPaymentButton(onTap: () {}),
       ],
     );
   }

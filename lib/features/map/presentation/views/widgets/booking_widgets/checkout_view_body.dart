@@ -10,7 +10,7 @@ class CheckoutViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 10.h),
       child: SingleChildScrollView(
         child: Column(
           children: [
