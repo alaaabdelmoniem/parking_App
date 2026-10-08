@@ -44,6 +44,7 @@ dependencies:
   intl: ^0.20.3
   latlong2: ^0.10.1
   lottie: ^3.5.1
+  qr_flutter: ^4.1.0
   shared_preferences: ^2.5.5
   supabase_flutter: ^2.17.2
   url_launcher: ^6.3.2

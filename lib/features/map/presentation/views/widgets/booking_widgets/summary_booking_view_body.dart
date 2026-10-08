@@ -22,7 +22,7 @@ class SummaryBookingViewBody extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Column(
         children: [
-           SummaryHeaderSection(text: 'Reservation summary',),
+          const TopBar(text: 'Reservation summary'),
           SpotSummarySection(
             spotModel: spotModel,
             startTime: startTime,

@@ -9,7 +9,7 @@ class BookSpotCubit extends Cubit<BookSpotState> {
   BookSpotCubit({required this.bookingSpotRepo}) : super(BookSpotInitial());
   final BookingSpoRepo bookingSpotRepo;
 
-  Future<void> bookSpot({required BookingModel booking}) async {
+  Future<void> bookSpot({required Bookmodel booking}) async {
     emit(BookSpotLoading());
     final result = await bookingSpotRepo.createBooking(booking);
     result.fold(

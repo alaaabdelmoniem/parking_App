@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parking/core/cache/cache_helper.dart';
 import 'package:parking/core/cache/cache_keys.dart';
 import 'package:parking/core/utils/app_colors.dart';
+import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/core/utils/functions/format_and_calculate_duration.dart';
 import 'package:parking/core/utils/widgets/morphing_loading_button.dart';
@@ -98,25 +99,6 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
 
         AddPaymentButton(onTap: () {}),
         SizedBox(height: 20.h),
-        // Padding(
-        //   padding: EdgeInsets.symmetric(horizontal: 10.0.w),
-        //   child: SizedBox(
-        //     width: double.infinity,
-        //     child: CupertinoButton(
-        //       sizeStyle: CupertinoButtonSize.medium,
-        //       color: AppColors.primary,
-        //       borderRadius: BorderRadius.circular(20.r),
-        //       onPressed: () {
-        //       },
-        //       child: Text(
-        //         'Confirm  Booking',
-        //         style: AppTextStyle.buttonSmall.copyWith(
-        //           color: AppColors.textOnDark,
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // ),
         BlocConsumer<BookSpotCubit, BookSpotState>(
           listener: (context, state) {
             if (state is BookSpotFailure) {
@@ -125,9 +107,13 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
               ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
             }
 
-            // if (state is BookSpotSuccess) {
-            // GoRouter.of(context).pushReplacement(AppRouter.kMapView);
-            // }
+            if (state is BookSpotSuccess) {
+              GoRouter.of(context).push(
+                AppRouter.kBookingConfirmed,
+                extra: widget.bookModel
+                // extra: widget.bookModel,
+              );
+            }
           },
 
           builder: (context, state) {
@@ -138,7 +124,7 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
               text: 'Confirm Booking',
               onPressed: () {
                 BlocProvider.of<BookSpotCubit>(context).bookSpot(
-                  booking: BookingModel(
+                  booking: Bookmodel(
                     userId: userId as String,
                     spotId: spotModel.id!,
                     spotName: spotModel.name,
@@ -146,7 +132,7 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
                     endTime: widget.bookModel.endTime,
                     durationMinutes: duration!.inMinutes,
                     pricePerHour: spotModel.priceForHour,
-                    
+
                     totalPrice:
                         (duration.inHours) * (spotModel.priceForHour ?? 0),
                   ),

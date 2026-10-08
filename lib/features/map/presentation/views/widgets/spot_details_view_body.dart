@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_text_style.dart';
-import 'package:parking/core/utils/functions/date_formats.dart';
+import 'package:parking/core/utils/functions/date_and_time_formats.dart';
 import 'package:parking/core/utils/functions/format_and_calculate_duration.dart';
 import 'package:parking/core/utils/functions/get_current_postiones.dart';
 import 'package:parking/core/utils/functions/get_distance_and_time.dart';

@@ -14,7 +14,7 @@ class CheckoutViewBody extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SummaryHeaderSection(text: 'Checkout'),
+            const TopBar(text: 'Checkout'),
             CheckoutDetailsSection(bookModel: bookModel),
           ],
         ),

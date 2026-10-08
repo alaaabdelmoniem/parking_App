@@ -3,13 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 
-class SummaryHeaderSection extends StatelessWidget {
-  const SummaryHeaderSection({super.key, required this.text});
+class TopBar extends StatelessWidget {
+  const TopBar({super.key, required this.text});
   final String text;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 18.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 18.h),
       child: Row(
         children: [
           GestureDetector(

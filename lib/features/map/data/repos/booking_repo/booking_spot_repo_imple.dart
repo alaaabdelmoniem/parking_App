@@ -8,7 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BookingSpotRepoImple implements BookingSpoRepo {
   @override
-  Future<Either<Failures, void>> createBooking(BookingModel booking) async {
+  Future<Either<Failures, void>> createBooking(Bookmodel booking) async {
     try {
       final userId = Supabase.instance.client.auth.currentUser?.id;
       if (userId == null) {

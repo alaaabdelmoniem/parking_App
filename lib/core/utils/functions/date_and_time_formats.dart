@@ -33,3 +33,21 @@ String formatDateTime(DateTime? dateTime) {
   return '${weekdays[dateTime.weekday - 1]}, ${months[dateTime.month - 1]} '
       '${dateTime.day}, $hour:$minute';
 }
+
+
+
+String formatDateOnly(DateTime dateTime) {
+  const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+  ];
+  return '${weekdays[dateTime.weekday - 1]}, ${months[dateTime.month - 1]} ${dateTime.day}';
+}
+
+String formatTimeOnly(DateTime dateTime) {
+  final hour12 = dateTime.hour % 12 == 0 ? 12 : dateTime.hour % 12;
+  final minute = dateTime.minute.toString().padLeft(2, '0');
+  final period = dateTime.hour >= 12 ? 'PM' : 'AM';
+  return '$hour12:$minute $period';
+}
