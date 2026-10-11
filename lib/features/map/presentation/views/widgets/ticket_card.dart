@@ -34,7 +34,6 @@ class TicketCard extends StatelessWidget {
               children: [
                 const _HeaderRow(status: 'UPCOMING'),
                 SizedBox(height: 22.h),
-                // const _TimeRow(),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -171,6 +170,8 @@ class TicketCard extends StatelessWidget {
                   ),
                   child: QrImageView(
                     data: bookModel.spotModel.id.toString(),
+                    //فيه إصدارات متعددة، وكل إصدار بيقدر يستوعب كمية مختلفة من البيانات.
+                    // استخدام QrVersions.auto بيخلّي المكتبة تختار الإصدار المناسب تلقائيًا حسب حجم البيانات
                     version: QrVersions.auto,
                     size: 180.w,
                     backgroundColor: AppColors.surface,

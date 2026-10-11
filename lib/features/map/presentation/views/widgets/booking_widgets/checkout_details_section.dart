@@ -108,7 +108,7 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
             }
 
             if (state is BookSpotSuccess) {
-              GoRouter.of(context).push(
+              GoRouter.of(context).pushReplacement(
                 AppRouter.kBookingConfirmed,
                 extra: widget.bookModel
                 // extra: widget.bookModel,

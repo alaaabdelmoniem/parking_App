@@ -30,7 +30,8 @@ class _SplashViewState extends State<SplashView> {
         } else {
           log('uid:$uid ');
 
-          GoRouter.of(context).pushReplacement(AppRouter.kMapView);
+          // GoRouter.of(context).pushReplacement(AppRouter.kMapView);
+          GoRouter.of(context).pushReplacement(AppRouter.kMainScreen);
         }
       }
     });

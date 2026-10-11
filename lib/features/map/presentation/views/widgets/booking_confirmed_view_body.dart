@@ -46,7 +46,7 @@ class BookingConfirmedViewBody extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 16.h),
           child: ElevatedButton.icon(
             onPressed: () {
-              GoRouter.of(context).pushReplacement(AppRouter.kMapView);
+              GoRouter.of(context).pushReplacement(AppRouter.kMainScreen);
             },
             label: Text(
               'Done',
