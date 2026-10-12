@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:parking/features/map/presentation/views/map_view.dart';
 import 'package:parking/features/main/presentation/views/widgets/nav_bar.dart';
+import 'package:parking/features/reservations/presentation/views/reservations_view.dart';
 
 class MainNavView extends StatefulWidget {
   const MainNavView({super.key});
@@ -10,9 +11,9 @@ class MainNavView extends StatefulWidget {
 }
 
 class _MainNavViewState extends State<MainNavView> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
-  final _screens = const [MapScreen(), ReservationsScreen(), ProfileScreen()];
+  final _screens = const [MapScreen(), ReservationsView(), ProfileScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +25,6 @@ class _MainNavViewState extends State<MainNavView> {
         onItemSelected: (index) => setState(() => _selectedIndex = index),
       ),
     );
-  }
-}
-
-class ReservationsScreen extends StatelessWidget {
-  const ReservationsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold();
   }
 }
 
