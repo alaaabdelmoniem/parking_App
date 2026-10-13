@@ -4,24 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/core/utils/functions/date_and_time_formats.dart';
+import 'package:parking/core/utils/functions/derive_booking_status.dart';
 import 'package:parking/features/reservations/presentation/manager/cubits/get_booking_spots/getbookingspots_cubit.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/reservation_status_filter.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/reservations_card.dart';
 
 class ReservationsViewBody extends StatelessWidget {
   const ReservationsViewBody({super.key});
-  ReservationCardStatus mapBookingStatus(String status) {
-    switch (status) {
-      case 'active':
-        return ReservationCardStatus.active;
-      case 'completed':
-      case 'cancelled':
-        return ReservationCardStatus.completed;
-      case 'upcoming':
-      default:
-        return ReservationCardStatus.upcoming;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +67,9 @@ class ReservationsViewBody extends StatelessWidget {
                       final spot =
                           spots[index]; // same index -> same booking's spot
                       return ReservationCard(
-                        status: mapBookingStatus(booking.status),
-                        imageUrl:
-                            (spot?.images != null && spot!.images.isNotEmpty)
-                            ? spot.images[0]
-                            : 'https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?w=200',
+                        status: deriveBookingStatus(booking),
+                        imageUrl:spot?.images[0]??'',
+                  
                         spotName: booking.spotName,
                         address: spot?.address ?? 'Address unavailable',
                         date: formatDateOnly(booking.startTime),

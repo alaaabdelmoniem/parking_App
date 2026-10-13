@@ -27,14 +27,9 @@ class ReservationCard extends StatelessWidget {
   final String imageUrl;
   final String spotName;
   final String address;
-
-  /// e.g. "Oct 14, 2026"
   final String date;
-
-  /// e.g. "9:00 AM - 11:30 AM"
   final String timeRange;
   final double totalPrice;
-
   final VoidCallback? onTap;
   final VoidCallback? onViewQrCode;
   final VoidCallback? onGetDirections;
@@ -69,7 +64,7 @@ class ReservationCard extends StatelessWidget {
                       height: 72.w,
                       color: AppColors.surfaceMuted,
                       child: const Icon(
-                        Icons.local_parking,
+                        Icons.image_not_supported,
                         color: AppColors.textTertiary,
                       ),
                     ),
