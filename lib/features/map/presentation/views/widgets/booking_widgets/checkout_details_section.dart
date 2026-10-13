@@ -110,7 +110,7 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
             if (state is BookSpotSuccess) {
               GoRouter.of(context).pushReplacement(
                 AppRouter.kBookingConfirmed,
-                extra: widget.bookModel
+                extra: widget.bookModel,
                 // extra: widget.bookModel,
               );
             }
@@ -124,7 +124,7 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
               text: 'Confirm Booking',
               onPressed: () {
                 BlocProvider.of<BookSpotCubit>(context).bookSpot(
-                  booking: Bookmodel(
+                  booking: Bookingmodel(
                     userId: userId as String,
                     spotId: spotModel.id!,
                     spotName: spotModel.name,

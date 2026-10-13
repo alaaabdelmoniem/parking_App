@@ -1,4 +1,4 @@
-class Bookmodel {
+class Bookingmodel {
   final String? id;
   final String userId;
   final String spotId;
@@ -12,7 +12,7 @@ class Bookmodel {
   final String? paymentMethod;
   final String paymentStatus;
 
-  const Bookmodel({
+  const Bookingmodel({
     this.id,
     required this.userId,
     required this.spotId,
@@ -43,8 +43,8 @@ class Bookmodel {
     };
   }
 
-  factory Bookmodel.fromJson(Map<String, dynamic> json) {
-    return Bookmodel(
+  factory Bookingmodel.fromJson(Map<String, dynamic> json) {
+    return Bookingmodel(
       id: json['id'],
       userId: json['user_id'],
       spotId: json['spot_id'],

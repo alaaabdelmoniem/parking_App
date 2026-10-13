@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:parking/features/map/presentation/views/map_view.dart';
 import 'package:parking/features/main/presentation/views/widgets/nav_bar.dart';
+import 'package:parking/features/map/presentation/views/map_view.dart';
 import 'package:parking/features/reservations/presentation/views/reservations_view.dart';
 
 class MainNavView extends StatefulWidget {
