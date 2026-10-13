@@ -9,9 +9,15 @@ import 'package:parking/features/reservations/presentation/manager/cubits/get_bo
 import 'package:parking/features/reservations/presentation/views/widgets/reservation_status_filter.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/reservations_card.dart';
 
-class ReservationsViewBody extends StatelessWidget {
+class ReservationsViewBody extends StatefulWidget {
   const ReservationsViewBody({super.key});
 
+  @override
+  State<ReservationsViewBody> createState() => _ReservationsViewBodyState();
+}
+
+class _ReservationsViewBodyState extends State<ReservationsViewBody> {
+  int _selectedFilterIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,7 +33,11 @@ class ReservationsViewBody extends StatelessWidget {
             ),
           ),
           SizedBox(height: 15.h),
-          const ReservationStatusFilter(),
+          ReservationStatusFilter(
+            onChanged: (value) => setState(() {
+              _selectedFilterIndex = value;
+            }),
+          ),
           SizedBox(height: 15.h),
 
           BlocBuilder<GetbookingspotsCubit, GetbookingspotsState>(
@@ -57,25 +67,54 @@ class ReservationsViewBody extends StatelessWidget {
                   );
                 }
 
+                // Filter client-side, keeping booking <-> spot pairs together
+                // by index instead of filtering each list separately.
+                final filteredIndexes = bookings.indexed
+                    .where((e) {
+                      final (_, booking) = e;
+                      final status = deriveBookingStatus(booking);
+                      return switch (_selectedFilterIndex) {
+                        1 => status == ReservationCardStatus.active,
+                        2 => status == ReservationCardStatus.upcoming,
+                        3 => status == ReservationCardStatus.completed,
+                        _ => true, // 0 = All
+                      };
+                    })
+                    .map((e) => e.$1) 
+                    .toList();
+
+                if (filteredIndexes.isEmpty) {
+                  return Center(
+                    child: Text(
+                      'No reservations in this category',
+                      style: AppTextStyle.body.copyWith(
+                        color: AppColors.textTertiary,
+                      ),
+                    ),
+                  );
+                }
+
                 return Expanded(
                   child: ListView.separated(
-                    itemCount: bookings.length,
+                    itemCount: filteredIndexes.length,
                     separatorBuilder: (context, index) =>
                         SizedBox(height: 15.h),
-                    itemBuilder: (context, index) {
-                      final booking = bookings[index];
-                      final spot =
-                          spots[index]; // same index -> same booking's spot
+                    itemBuilder: (context, listIndex) {
+                      final originalIndex = filteredIndexes[listIndex];
+                      final booking = bookings[originalIndex];
+                      final spot = spots[originalIndex];
+
                       return ReservationCard(
                         status: deriveBookingStatus(booking),
-                        imageUrl:spot?.images[0]??'',
-                  
+                        imageUrl:
+                            (spot?.images != null && spot!.images.isNotEmpty)
+                            ? spot.images.first
+                            : '',
                         spotName: booking.spotName,
                         address: spot?.address ?? 'Address unavailable',
                         date: formatDateOnly(booking.startTime),
                         timeRange:
                             '${formatTimeOnly(booking.startTime)} - ${formatTimeOnly(booking.endTime)}',
-
                         totalPrice: booking.totalPrice,
                         onViewQrCode: () {},
                         onGetDirections: () {},

@@ -5,7 +5,8 @@ import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 
 class ReservationStatusFilter extends StatefulWidget {
-  const ReservationStatusFilter({super.key});
+  const ReservationStatusFilter({super.key, this.onChanged});
+  final ValueChanged<int>? onChanged;
 
   @override
   State<ReservationStatusFilter> createState() =>
@@ -35,8 +36,10 @@ class _ReservationStatusFilterState extends State<ReservationStatusFilter> {
           final isSelected = index == _selectedIndex;
 
           return GestureDetector(
-            onTap: () => setState(() => _selectedIndex = index),
-            child: AnimatedContainer(
+ onTap: () {
+              setState(() => _selectedIndex = index);
+              widget.onChanged?.call(index);
+            },            child: AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               curve: Curves.easeInOut,
               padding: EdgeInsets.symmetric(horizontal: 16.w),

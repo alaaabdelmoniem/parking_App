@@ -19,7 +19,7 @@ class ReservationCard extends StatelessWidget {
     required this.totalPrice,
     this.onTap,
     this.onViewQrCode,
-    this.onGetDirections,
+  this.onGetDirections,
     this.onBookAgain,
   });
 
