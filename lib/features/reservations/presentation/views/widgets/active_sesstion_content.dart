@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/utils/oppening_houres.dart';
 import 'package:parking/core/utils/widgets/custom_outlined_button.dart';
 import 'package:parking/features/map/data/models/booking_model.dart';
+import 'package:parking/features/map/data/models/spot_model.dart';
+import 'package:parking/features/map/presentation/views/widgets/cuprtino_date_time_picker.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/active_sesstion_timer.dart';
 
 class ActiveSessionContent extends StatelessWidget {
@@ -14,9 +17,11 @@ class ActiveSessionContent extends StatelessWidget {
     this.onGetDirections,
     this.onViewQrCode,
     required this.booking,
+    required this.spot,
   });
 
   final String address;
+  final SpotModel spot;
   final VoidCallback? onExtendTime;
   final VoidCallback? onGetDirections;
   final VoidCallback? onViewQrCode;
@@ -101,7 +106,20 @@ class ActiveSessionContent extends StatelessWidget {
           SizedBox(
             height: 46.h,
             child: ElevatedButton.icon(
-              onPressed: onExtendTime,
+              onPressed: () async {
+                final hours = OpeningHours.tryParse(spot.openingHours);
+
+                final result = await showCupertinoDateTimePicker(
+                  context,
+                  title: 'End Time',
+                  initialDateTime: booking.endTime,
+                  openingHours: hours,
+                );
+                if (result != null) {
+                  // setState(() => _selectedEndDateTime = result);
+                  print(result);
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: AppColors.textOnDark,

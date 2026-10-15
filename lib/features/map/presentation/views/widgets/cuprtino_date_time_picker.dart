@@ -47,7 +47,7 @@ Future<DateTime?> showCupertinoDateTimePicker(
       final day = DateTime(now.year, now.month, now.day + i);
       final slots = openingHours
           .slotsFor(day, stepMinutes: stepMinutes)
-          .where((s) => s.day == day.day && !s.isBefore(now)) 
+          .where((s) => s.day == day.day && !s.isBefore(now))
           .toList();
       if (slots.isNotEmpty) days.add((day: day, slots: slots));
     }
@@ -105,14 +105,23 @@ Future<DateTime?> showCupertinoDateTimePicker(
                   child: CupertinoPicker(
                     scrollController: dayController,
                     itemExtent: 36.h,
+
                     onSelectedItemChanged: (i) => setState(() {
                       dayIndex = i;
                       timeIndex = 0;
-                      timeController = FixedExtentScrollController();
+                      timeController.dispose();
+                      timeController = FixedExtentScrollController(
+                        initialItem: 0,
+                      );
                     }),
                     children: [
                       for (final e in days)
-                        Center(child: Text(_dayLabel(e.day))),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsetsGeometry.only(bottom: 3),
+                            child: Text(_dayLabel(e.day)),
+                          ),
+                        ),
                     ],
                   ),
                 ),

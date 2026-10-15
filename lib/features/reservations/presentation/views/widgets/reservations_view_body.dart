@@ -119,6 +119,7 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                             ? () => showActiveSessionSheet(
                                 context,
                                 address: spot?.address ?? 'Address unavailable',
+                                spot: spot!,
                                 booking: booking,
                                 onViewQrCode: () => showQrInBottomSheet(
                                   context,
