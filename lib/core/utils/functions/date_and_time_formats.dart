@@ -51,3 +51,11 @@ String formatTimeOnly(DateTime dateTime) {
   final period = dateTime.hour >= 12 ? 'PM' : 'AM';
   return '$hour12:$minute $period';
 }
+
+
+
+
+  String formatTimer(Duration d) {
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${two(d.inHours)}:${two(d.inMinutes % 60)}:${two(d.inSeconds % 60)}';
+  }

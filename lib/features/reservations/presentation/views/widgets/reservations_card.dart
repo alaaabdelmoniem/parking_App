@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/utils/functions/show_qrcode_in_bootomsheet.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/action_row.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/status_pill.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 enum ReservationCardStatus { upcoming, active, completed }
 
@@ -19,8 +21,9 @@ class ReservationCard extends StatelessWidget {
     required this.totalPrice,
     this.onTap,
     this.onViewQrCode,
-  this.onGetDirections,
+    this.onGetDirections,
     this.onBookAgain,
+    required this.id,
   });
 
   final ReservationCardStatus status;
@@ -34,6 +37,7 @@ class ReservationCard extends StatelessWidget {
   final VoidCallback? onViewQrCode;
   final VoidCallback? onGetDirections;
   final VoidCallback? onBookAgain;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +178,10 @@ class ReservationCard extends StatelessWidget {
 
             ActionRow(
               status: status,
-              onViewQrCode: onViewQrCode,
+              onViewQrCode: () {
+                print('ok');
+                showQrInBottomSheet(context, id: id);
+              },
               onGetDirections: onGetDirections,
               onBookAgain: onBookAgain,
             ),

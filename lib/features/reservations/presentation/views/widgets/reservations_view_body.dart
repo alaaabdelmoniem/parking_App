@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/core/utils/functions/date_and_time_formats.dart';
 import 'package:parking/core/utils/functions/derive_booking_status.dart';
+import 'package:parking/core/utils/functions/show_qrcode_in_bootomsheet.dart';
 import 'package:parking/features/reservations/presentation/manager/cubits/get_booking_spots/getbookingspots_cubit.dart';
+import 'package:parking/features/reservations/presentation/views/widgets/show_active_sesstion_sheet.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/reservation_status_filter.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/reservations_card.dart';
 
@@ -44,7 +47,9 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
             builder: (context, state) {
               if (state is GetbookingspotsLoading ||
                   state is GetbookingspotsInitial) {
-                return const Center(child: CircularProgressIndicator());
+                return const Expanded(
+                  child: Center(child: CupertinoActivityIndicator()),
+                );
               } else if (state is GetbookingspotsFailure) {
                 return Center(
                   child: Text(
@@ -67,8 +72,8 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                   );
                 }
 
-                // Filter client-side, keeping booking <-> spot pairs together
-                // by index instead of filtering each list separately.
+                //Resolve which booking/spot pairs should be visible for the currently selected filter tab
+                //This is not the best way to handle large datasets — it will impact performance and resources
                 final filteredIndexes = bookings.indexed
                     .where((e) {
                       final (_, booking) = e;
@@ -80,7 +85,7 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                         _ => true, // 0 = All
                       };
                     })
-                    .map((e) => e.$1) 
+                    .map((e) => e.$1)
                     .toList();
 
                 if (filteredIndexes.isEmpty) {
@@ -105,6 +110,20 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                       final spot = spots[originalIndex];
 
                       return ReservationCard(
+                        onTap:
+                            deriveBookingStatus(booking) ==
+                                ReservationCardStatus.active
+                            ? () => showActiveSessionSheet(
+                                context,
+                                address: spot?.address ?? 'Address unavailable',
+                                booking: booking,
+                                onViewQrCode: () => showQrInBottomSheet(
+                                  context,
+                                  id: booking.spotId,
+                                ),
+                              )
+                            : null,
+                        id: booking.id!,
                         status: deriveBookingStatus(booking),
                         imageUrl:
                             (spot?.images != null && spot!.images.isNotEmpty)
@@ -116,7 +135,6 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                         timeRange:
                             '${formatTimeOnly(booking.startTime)} - ${formatTimeOnly(booking.endTime)}',
                         totalPrice: booking.totalPrice,
-                        onViewQrCode: () {},
                         onGetDirections: () {},
                         onBookAgain: () {},
                       );
@@ -133,34 +151,3 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
     );
   }
 }
-
-//   SizedBox(height: 15.h),
-
-//   ReservationCard(
-//     status: ReservationCardStatus.active,
-//     imageUrl:
-//         'https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?w=200',
-// spotName: 'Downtown Garage',
-// address: '5 Nile Corniche, Cairo',
-// date: 'Oct 13, 2026',
-// timeRange: '11:00 PM - 1:00 AM',
-//     totalPrice: 16.0,
-//     onGetDirections: () {
-//       print('open maps');
-//     },
-//   ),
-//   SizedBox(height: 15.h),
-
-//   ReservationCard(
-//     status: ReservationCardStatus.completed,
-//     imageUrl:
-//         'https://images.unsplash.com/photo-1573348722427-f1d6819fdf98?w=200',
-//     spotName: 'Maadi Covered Parking',
-//     address: '88 Road 9, Maadi',
-//     date: 'Oct 2, 2026',
-//     timeRange: '2:00 PM - 4:00 PM',
-//     totalPrice: 10.0,
-//     onBookAgain: () {
-//       print('book again');
-//     },
-//   ),
