@@ -1,5 +1,3 @@
-import 'package:geolocator_platform_interface/src/models/position.dart';
-
 class SpotModel {
   final String? id; // Supabase row id (uuid), null for new/unsaved spots
   final String?
@@ -161,6 +159,4 @@ class SpotModel {
       noteDirection: noteDirection ?? this.noteDirection,
     );
   }
-
-  Object? distanceFrom(Position position) {}
 }

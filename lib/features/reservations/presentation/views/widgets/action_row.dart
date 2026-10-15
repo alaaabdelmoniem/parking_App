@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
-import 'package:parking/features/reservations/presentation/views/widgets/reservations_card.dart';
+import '../../../../../core/utils/reservation_card_status.dart';
 
 class ActionRow extends StatelessWidget {
-  const ActionRow({super.key, 
+  const ActionRow({
+    super.key,
     required this.status,
     required this.onViewQrCode,
     required this.onGetDirections,
@@ -52,7 +53,7 @@ class ActionRow extends StatelessWidget {
             onPressed: onGetDirections,
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.primary,
-              side: BorderSide(color: AppColors.primary),
+              side: const BorderSide(color: AppColors.primary),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),
@@ -75,7 +76,7 @@ class ActionRow extends StatelessWidget {
             onPressed: onBookAgain,
             style: OutlinedButton.styleFrom(
               foregroundColor: AppColors.textSecondary,
-              side: BorderSide(color: AppColors.border),
+              side: const BorderSide(color: AppColors.border),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),

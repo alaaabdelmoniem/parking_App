@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/plusing_dot.dart';
-import 'package:parking/features/reservations/presentation/views/widgets/reservations_card.dart';
+import '../../../../../core/utils/reservation_card_status.dart';
 
 class StatusPill extends StatelessWidget {
   const StatusPill({super.key, required this.status});

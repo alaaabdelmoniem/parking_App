@@ -5,9 +5,7 @@ import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/core/utils/functions/show_qrcode_in_bootomsheet.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/action_row.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/status_pill.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-
-enum ReservationCardStatus { upcoming, active, completed }
+import '../../../../../core/utils/reservation_card_status.dart';
 
 class ReservationCard extends StatelessWidget {
   const ReservationCard({

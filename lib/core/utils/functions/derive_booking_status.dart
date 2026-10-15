@@ -1,5 +1,5 @@
 import 'package:parking/features/map/data/models/booking_model.dart';
-import 'package:parking/features/reservations/presentation/views/widgets/reservations_card.dart';
+import '../reservation_card_status.dart';
 
 ReservationCardStatus deriveBookingStatus(Bookingmodel booking) {
   final now = DateTime.now();

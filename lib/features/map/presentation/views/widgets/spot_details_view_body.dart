@@ -11,6 +11,7 @@ import 'package:parking/core/utils/functions/format_and_calculate_duration.dart'
 import 'package:parking/core/utils/functions/get_current_postiones.dart';
 import 'package:parking/core/utils/functions/get_distance_and_time.dart';
 import 'package:parking/core/utils/functions/show_snackbar_message.dart';
+import 'package:parking/core/utils/oppening_houres.dart';
 import 'package:parking/features/map/data/models/book_model.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
 import 'package:parking/features/map/presentation/views/widgets/Space_Befor_section_title.dart';
@@ -51,12 +52,14 @@ class _SpotDetailsViewBodyState extends State<SpotDetailsViewBody> {
   DateTime? _selectedStartDateTime;
   DateTime? _selectedEndDateTime;
 
-
   Future<void> _openStartTimePicker() async {
+    final hours = OpeningHours.tryParse(widget.spotModel.openingHours);
+
     final result = await showCupertinoDateTimePicker(
       context,
       title: 'Start Time',
       initialDateTime: _selectedStartDateTime,
+      openingHours: hours,
     );
     if (result != null) {
       setState(() => _selectedStartDateTime = result);
@@ -64,10 +67,13 @@ class _SpotDetailsViewBodyState extends State<SpotDetailsViewBody> {
   }
 
   Future<void> _openEndTimePicker() async {
+    final hours = OpeningHours.tryParse(widget.spotModel.openingHours);
+
     final result = await showCupertinoDateTimePicker(
       context,
       title: 'End Time',
       initialDateTime: _selectedEndDateTime,
+      openingHours: hours,
     );
     if (result != null) {
       setState(() => _selectedEndDateTime = result);

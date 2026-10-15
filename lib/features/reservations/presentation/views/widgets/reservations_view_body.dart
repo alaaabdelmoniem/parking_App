@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parking/core/utils/app_colors.dart';
+import 'package:parking/core/utils/app_router.dart';
 import 'package:parking/core/utils/app_text_style.dart';
 import 'package:parking/core/utils/functions/date_and_time_formats.dart';
 import 'package:parking/core/utils/functions/derive_booking_status.dart';
@@ -11,6 +13,7 @@ import 'package:parking/features/reservations/presentation/manager/cubits/get_bo
 import 'package:parking/features/reservations/presentation/views/widgets/show_active_sesstion_sheet.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/reservation_status_filter.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/reservations_card.dart';
+import '../../../../../core/utils/reservation_card_status.dart';
 
 class ReservationsViewBody extends StatefulWidget {
   const ReservationsViewBody({super.key});
@@ -129,14 +132,18 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                             (spot?.images != null && spot!.images.isNotEmpty)
                             ? spot.images.first
                             : '',
-                        spotName: booking.spotName,
-                        address: spot?.address ?? 'Address unavailable',
+                        spotName: spot!.name,
+                        address: spot.address ?? 'Address unavailable',
                         date: formatDateOnly(booking.startTime),
                         timeRange:
                             '${formatTimeOnly(booking.startTime)} - ${formatTimeOnly(booking.endTime)}',
                         totalPrice: booking.totalPrice,
                         onGetDirections: () {},
-                        onBookAgain: () {},
+                        onBookAgain: () {
+                          GoRouter.of(
+                            context,
+                          ).push(AppRouter.kSpotDetailsView, extra: spot);
+                        },
                       );
                     },
                   ),
