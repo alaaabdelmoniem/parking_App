@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/utils/app_colors.dart';
 import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/utils/functions/show_snackbar_message.dart';
 import 'package:parking/core/utils/oppening_houres.dart';
 import 'package:parking/core/utils/widgets/custom_outlined_button.dart';
 import 'package:parking/features/map/data/models/booking_model.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
 import 'package:parking/features/map/presentation/views/widgets/cuprtino_date_time_picker.dart';
+import 'package:parking/features/reservations/presentation/manager/cubits/update_duration_booking/update_duration_booking_cubit.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/active_sesstion_timer.dart';
 
 class ActiveSessionContent extends StatelessWidget {
@@ -103,39 +106,66 @@ class ActiveSessionContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20.h),
-          SizedBox(
-            height: 46.h,
-            child: ElevatedButton.icon(
-              onPressed: () async {
-                final hours = OpeningHours.tryParse(spot.openingHours);
-
-                final result = await showCupertinoDateTimePicker(
+          //extend time
+          BlocConsumer<UpdateDurationBookingCubit, UpdateDurationBookingState>(
+            listener: (context, state) {
+              if (state is UpdateDurationBookingSuccess) {
+                showSnackbarMessage(
                   context,
-                  title: 'End Time',
-                  initialDateTime: booking.endTime,
-                  openingHours: hours,
+                  content: const Text('Duration updated successfully'),
+                  color: AppColors.success,
                 );
-                if (result != null) {
-                  // setState(() => _selectedEndDateTime = result);
-                  print(result);
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.textOnDark,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r),
+                print('Duration updated successfully');
+              }
+              if (state is UpdateDurationBookingFailure) {
+                showSnackbarMessage(
+                  context,
+                  content: Text(state.errorMessage),
+                  color: AppColors.error,
+                );
+              }
+            },
+            builder: (context, state) {
+              final isloading = state is UpdateDurationBookingLoading;
+              return SizedBox(
+                height: 46.h,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    final hours = OpeningHours.tryParse(spot.openingHours);
+                    final result = await showCupertinoDateTimePicker(
+                      context,
+                      title: 'End Time',
+                      initialDateTime: booking.endTime,
+                      openingHours: hours,
+                    );
+                    if (result != null) {
+                      print('Selected end time: $result');
+                      BlocProvider.of<UpdateDurationBookingCubit>(
+                        context,
+                      ).extendBookingTime(
+                        newEndTime: result,
+                        bookingId: booking.id!,
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.textOnDark,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                    ),
+                  ),
+                  icon: Icon(Icons.add_alarm, size: 18.sp),
+                  label: Text(
+                    isloading ? 'loading....' : 'Extend Time',
+                    style: AppTextStyle.buttonSmall.copyWith(
+                      color: AppColors.textOnDark,
+                    ),
+                  ),
                 ),
-              ),
-              icon: Icon(Icons.add_alarm, size: 18.sp),
-              label: Text(
-                'Extend Time',
-                style: AppTextStyle.buttonSmall.copyWith(
-                  color: AppColors.textOnDark,
-                ),
-              ),
-            ),
+              );
+            },
           ),
           SizedBox(height: 10.h),
 
