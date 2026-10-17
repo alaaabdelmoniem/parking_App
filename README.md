@@ -83,10 +83,21 @@ parking_App/
 │   │   │   ├── dio_handler.dart                  # Dio/network error mapping
 │   │   │   ├── failure.dart                      # Base Failure types
 │   │   │   └── supabase_handler.dart              # Supabase/Postgrest/Auth error mapping
-│   │   ├── models/                               # Shared data models
-│   │   ├── routers/                              # go_router route definitions
-│   │   ├── theme/                                # Light theme configuration
-│   │   └── utils/                                # Colors, text styles, constants, shared widgets, and helper functions (distance, formatting, opening hours, mock data)
+│   │   ├── models/
+│   │   │   └── card_details_model.dart           # Card details model (Add Card)
+│   │   ├── routers/
+│   │   │   └── app_router.dart                   # go_router route definitions
+│   │   ├── theme/
+│   │   │   ├── app_colors.dart                   # App color system
+│   │   │   ├── app_text_style.dart               # App text style system
+│   │   │   └── app_theme.dart                    # Light theme configuration
+│   │   └── utils/
+│   │       ├── enums/                            # Shared enums
+│   │       ├── functions/                        # Shared helper functions (distance, formatting, mock data, etc.)
+│   │       ├── widgets/                          # Shared reusable widgets
+│   │       ├── constants.dart                    # App-wide constants
+│   │       ├── input_card_formates.dart          # Card number / expiry / CVV input formatters
+│   │       └── oppening_houres.dart              # OSM opening-hours parser (drives the booking date/time picker)
 │   ├── features/
 │   │   ├── auth/                                 # Login, sign-up, and social auth
 │   │   ├── main/                                 # App shell: main screen and bottom navigation bar
