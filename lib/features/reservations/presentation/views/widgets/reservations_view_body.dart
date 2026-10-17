@@ -3,19 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_router.dart';
-import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/routers/app_router.dart';
+import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/core/utils/functions/date_and_time_formats.dart';
 import 'package:parking/core/utils/functions/derive_booking_status.dart';
 import 'package:parking/core/utils/functions/show_qrcode_in_bootomsheet.dart';
-import 'package:parking/features/reservations/data/repos/reservations_repo_imple.dart';
 import 'package:parking/features/reservations/presentation/manager/cubits/get_booking_spots/getbookingspots_cubit.dart';
-import 'package:parking/features/reservations/presentation/manager/cubits/update_duration_booking/update_duration_booking_cubit.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/show_active_sesstion_sheet.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/reservation_status_filter.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/reservations_card.dart';
-import '../../../../../core/utils/reservation_card_status.dart';
+import '../../../../../core/utils/enums/reservation_card_status.dart';
 
 class ReservationsViewBody extends StatefulWidget {
   const ReservationsViewBody({super.key});

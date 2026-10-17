@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parking/core/utils/app_colors.dart';
+import 'package:parking/core/theme/app_colors.dart';
 import 'package:parking/features/auth/data/repos/register_repo/register_repo_imple.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/register_with_email/register_with_email_cubit.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/register_with_facebook/register_with_facebook_cubit.dart';

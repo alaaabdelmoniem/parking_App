@@ -1,9 +1,3 @@
-///   "24/7"
-///   "Mo-Su 09:00-18:00"
-///   "Mo-Fr 08:00-20:00; Sa 09:00-14:00; Su off"
-///   "Mo,We,Fr 08:00-12:00,14:00-18:00"
-library;
-
 class OpeningHours {
   OpeningHours._(this._byWeekday);
 
@@ -21,8 +15,8 @@ class OpeningHours {
   };
 
   static final _rulePattern = RegExp(
-    r'^(.*?)\s*((?:\d{1,2}:\d{2}-\d{1,2}:\d{2})'//group 1
-    r'(?:\s*,\s*\d{1,2}:\d{2}-\d{1,2}:\d{2})*|off)$',//group 2
+    r'^(.*?)\s*((?:\d{1,2}:\d{2}-\d{1,2}:\d{2})' //group 1
+    r'(?:\s*,\s*\d{1,2}:\d{2}-\d{1,2}:\d{2})*|off)$', //group 2
   );
 
   static OpeningHours? tryParse(String? raw) {
@@ -44,19 +38,18 @@ class OpeningHours {
         if (rule.isEmpty) continue;
 
         final match = _rulePattern.firstMatch(rule);
-        if (match == null)//Monday to Friday 8am-5pm
-          throw const FormatException(
-            'unsupported rule',
-          ); 
+        if (match == null) //Monday to Friday 8am-5pm
+          throw const FormatException('unsupported rule');
 
         final days = _parseDays(match.group(1)!);
         final timesPart = match.group(2)!;
 
         final ranges = <(int, int)>[];
         if (timesPart != 'off') {
-          for (final piece in timesPart.split(',')) {//sometimes equal 08:00-12:00,14:00-18:00
+          for (final piece in timesPart.split(',')) {
+            //sometimes equal 08:00-12:00,14:00-18:00
             final bounds = piece.trim().split('-');
-            final open = _minutes(bounds[0]); 
+            final open = _minutes(bounds[0]);
             var close = _minutes(bounds[1]);
             if (close <= open) close = 1440; // overnight -> until midnight
             ranges.add((open, close));

@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/theme/app_text_style.dart';
 
 class SortDropdownButton extends StatelessWidget {
   const SortDropdownButton({super.key, required this.selected, required this.onSelected});

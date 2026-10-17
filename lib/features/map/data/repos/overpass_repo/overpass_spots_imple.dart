@@ -14,8 +14,8 @@ class OverpassSpotsImple implements OverpassGetSpots {
   final _supabase = Supabase.instance.client;
   @override
   Future<Either<Failures, void>> fetchOverpassGetSpots() async {
-    const lat = 38.9071933;
-    const lng = -77.0368726;
+    const lat = 48.8566;
+    const lng = 2.3522;
     const radius = 2000; // meters
 
     const query =

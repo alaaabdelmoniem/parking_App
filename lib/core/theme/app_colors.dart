@@ -1,20 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// ParkSmart app color system.
-///
-/// Semantic, purpose-driven palette pulled from the parking app UI: deep
-/// midnight navy for headers/hero surfaces and the desktop sidebar, electric
-/// blue as the primary action/brand color (CTAs, active nav, links, live
-/// map markers), and a soft cool-gray canvas instead of stark white, which
-/// reads calmer behind data-dense cards and maps.
-///
-/// Every color maps to a real, recurring use case - nothing was added "just
-/// in case." Apply colors at the call site (e.g. `AppTextStyle.title.copyWith(
-/// color: AppColors.textPrimary)`), never bake them into a text style.
 class AppColors {
   AppColors._();
 
-  // ---- Brand ----
   /// CTAs, primary buttons, active nav icon/label, links, selected map pins
   static const Color primary = Color(0xFF2563EB);
   /// Pressed states, gradient end for primary buttons/banners

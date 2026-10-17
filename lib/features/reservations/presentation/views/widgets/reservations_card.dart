@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/core/utils/functions/show_qrcode_in_bootomsheet.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/action_row.dart';
 import 'package:parking/features/reservations/presentation/views/widgets/status_pill.dart';
-import '../../../../../core/utils/reservation_card_status.dart';
+import '../../../../../core/utils/enums/reservation_card_status.dart';
 
 class ReservationCard extends StatelessWidget {
   const ReservationCard({

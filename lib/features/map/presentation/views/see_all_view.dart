@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/core/utils/functions/get_current_postiones.dart';
 import 'package:parking/core/utils/functions/get_distance_and_time.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
@@ -35,7 +35,7 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
     super.initState();
     BlocProvider.of<FetchSpotsCubit>(
       context,
-    ).fetchSpots(lat: 38.9071933, lng: -77.0368726);
+    ).fetchSpots(lat: 48.8566, lng: 2.3522);
     _getPosition();
   }
 

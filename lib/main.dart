@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:parking/core/cache/cache_helper.dart';
-import 'package:parking/core/utils/app_router.dart';
-import 'package:parking/core/utils/app_theme.dart';
+import 'package:parking/core/routers/app_router.dart';
+import 'package:parking/core/theme/app_theme.dart';
 import 'package:parking/features/map/data/repos/overpass_repo/overpass_spots_imple.dart';
 import 'package:parking/features/map/data/repos/supabase_repo/supabase_repo_imple.dart';
 import 'package:parking/features/map/presentation/manager/cubits/fetch_spots/fetch_spots_cubit.dart';
@@ -36,7 +36,7 @@ class ParkingApp extends StatelessWidget {
       child: BlocProvider(
         create: (context) =>
             FetchSpotsCubit(supabaseRepo: SupabaseRepoImple())
-              ..fetchSpots(lat: 38.9071933, lng: -77.0368726),
+              ..fetchSpots(lat: 48.8566, lng: 2.3522),
         child: MaterialApp.router(
           title: 'parking',
           theme: AppTheme.light,

@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:parking/core/cache/cache_helper.dart';
 import 'package:parking/core/cache/cache_keys.dart';
-import 'package:parking/core/utils/app_router.dart';
+import 'package:parking/core/routers/app_router.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});

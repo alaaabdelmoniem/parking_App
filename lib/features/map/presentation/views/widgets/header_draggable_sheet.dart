@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/theme/app_text_style.dart';
 
 class HeaderDraggableSheet extends StatelessWidget {
   const HeaderDraggableSheet({super.key, this.onPressed});

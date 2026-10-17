@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
-import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_router.dart';
-import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/routers/app_router.dart';
+import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/core/utils/widgets/morphing_loading_button.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/login_with_email/login_with_email_cubit.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/login_with_google/login_google_cubit.dart';
@@ -130,7 +130,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                 }
 
                 if (state is LoginWithEmailSuccess) {
-                  GoRouter.of(context).pushReplacement(AppRouter.kMapView);
+                  GoRouter.of(context).pushReplacement(AppRouter.kMainScreen);
                 }
               },
 

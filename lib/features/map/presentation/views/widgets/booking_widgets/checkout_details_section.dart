@@ -4,10 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:parking/core/cache/cache_helper.dart';
 import 'package:parking/core/cache/cache_keys.dart';
-import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_router.dart';
-import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/routers/app_router.dart';
+import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/core/utils/functions/format_and_calculate_duration.dart';
+import 'package:parking/core/utils/functions/show_add_card_sheet.dart';
 import 'package:parking/core/utils/widgets/morphing_loading_button.dart';
 import 'package:parking/features/map/data/models/book_model.dart';
 import 'package:parking/features/map/data/models/booking_model.dart';
@@ -97,7 +98,9 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
         PromoAndSummarySection(bookModel: widget.bookModel),
         const PaymentMethodsSection(),
 
-        AddPaymentButton(onTap: () {}),
+        AddPaymentButton(
+          onTap: () => showAddCardSheet(context, onSubmit: (value) {}),
+        ),
         SizedBox(height: 20.h),
         BlocConsumer<BookSpotCubit, BookSpotState>(
           listener: (context, state) {

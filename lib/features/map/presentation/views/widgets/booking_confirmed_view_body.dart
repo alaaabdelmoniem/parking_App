@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_router.dart';
-import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/routers/app_router.dart';
+import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/features/map/data/models/book_model.dart';
 import 'package:parking/features/map/presentation/views/widgets/booking_widgets/summary_header_section.dart';
 import 'package:parking/features/map/presentation/views/widgets/ticket_card.dart';

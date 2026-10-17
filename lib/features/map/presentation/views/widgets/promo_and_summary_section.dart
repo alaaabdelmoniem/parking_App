@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/features/map/data/models/book_model.dart';
 import 'package:parking/features/map/presentation/views/widgets/custom_summary_item.dart';
 
@@ -14,14 +14,15 @@ class PromoAndSummarySection extends StatefulWidget {
 
 class _PromoAndSummarySectionState extends State<PromoAndSummarySection> {
   final TextEditingController _controller = TextEditingController();
-
-  bool _applied = true;
-  final double _savedAmount = 5.00;
+  bool _applied = false;
+  final double _savedAmount = 2.00;
 
   void _toggleApply() {
-    setState(() {
-      _applied = !_applied;
-    });
+    if (_controller.text != '') {
+      setState(() {
+        _applied = true;
+      });
+    }
   }
 
   void _dismissBanner() {
@@ -77,6 +78,7 @@ class _PromoAndSummarySectionState extends State<PromoAndSummarySection> {
                             style: AppTextStyle.cardTitle.copyWith(
                               color: AppColors.textPrimary,
                             ),
+
                             decoration: InputDecoration(
                               isDense: true,
                               filled: false,
@@ -191,7 +193,7 @@ class _PromoAndSummarySectionState extends State<PromoAndSummarySection> {
             children: [
               CustomSummaryItem(
                 label: 'Parking fee',
-                value: '\$${widget. bookModel.spotModel.priceForHour}',
+                value: '\$${widget.bookModel.spotModel.priceForHour}',
               ),
               SizedBox(height: 10.h),
               const CustomSummaryItem(label: 'Tax (8.75%)', value: '\$1.05'),
@@ -227,7 +229,7 @@ class _PromoAndSummarySectionState extends State<PromoAndSummarySection> {
                     ),
                   ),
                   Text(
-                    '\$${widget.bookModel.spotModel.priceForHour! *widget. bookModel.duration}',
+                    '\$${(widget.bookModel.spotModel.priceForHour! * widget.bookModel.duration) - (_applied ? 2 : 0)}',
                     style: AppTextStyle.monoDisplay.copyWith(
                       color: AppColors.primary,
                       fontSize: 22.sp,

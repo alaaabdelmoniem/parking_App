@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:parking/core/utils/app_colors.dart';
+import 'package:parking/core/theme/app_colors.dart';
 import 'package:parking/features/map/data/models/book_model.dart';
 import 'package:parking/features/map/presentation/views/widgets/booking_confirmed_view_body.dart';
 

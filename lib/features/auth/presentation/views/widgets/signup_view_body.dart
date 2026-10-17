@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parking/core/utils/app_colors.dart';
-import 'package:parking/core/utils/app_router.dart';
-import 'package:parking/core/utils/app_text_style.dart';
+import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/routers/app_router.dart';
+import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/core/utils/widgets/morphing_loading_button.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/register_with_email/register_with_email_cubit.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/register_with_google/register_with_google_cubit.dart';
