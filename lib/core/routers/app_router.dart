@@ -72,7 +72,11 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: kSeeAllView,
-        builder: (context, state) => const SeeALlSpotsView(),
+        builder: (context, state) {
+          final spots = (state.extra) as List<SpotModel>;
+
+          return  SeeALlSpotsView(spots: spots);
+        },
       ),
       GoRoute(path: kMapView, builder: (context, state) => const MapScreen()),
       GoRoute(

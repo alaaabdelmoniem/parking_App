@@ -4,12 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:parking/core/routers/app_router.dart';
+import 'package:parking/features/map/data/models/spot_model.dart';
 import 'package:parking/features/map/presentation/manager/cubits/fetch_spots/fetch_spots_cubit.dart';
 import 'package:parking/features/map/presentation/views/widgets/header_draggable_sheet.dart';
 import 'package:parking/features/map/presentation/views/widgets/spot_nearby_item_with_TimeLine.dart';
 
 class RoundedSheetContent extends StatelessWidget {
   const RoundedSheetContent({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -43,9 +45,19 @@ class RoundedSheetContent extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 12.h),
-                    HeaderDraggableSheet(
-                      onPressed: () =>
-                          GoRouter.of(context).push(AppRouter.kSeeAllView),
+                    BlocBuilder<FetchSpotsCubit, FetchSpotsState>(
+                      builder: (context, state) {
+                        final spots = (state is FetchSpotsSuccess)
+                            ? state.spots
+                            : <SpotModel>[];
+                        return HeaderDraggableSheet(
+                          onPressed: spots.isNotEmpty
+                              ? () => GoRouter.of(
+                                  context,
+                                ).push(AppRouter.kSeeAllView, extra: spots)
+                              : null,
+                        );
+                      },
                     ),
                     SizedBox(height: 17.h),
                   ],
@@ -55,6 +67,10 @@ class RoundedSheetContent extends StatelessWidget {
               BlocBuilder<FetchSpotsCubit, FetchSpotsState>(
                 builder: (context, state) {
                   if (state is FetchSpotsSuccess) {
+                    final count = state.spots.length < 6
+                        ? state.spots.length
+                        : 6;
+
                     return SliverList.separated(
                       itemBuilder: (context, index) {
                         return SpotNearbyItemWithTimeLine(
@@ -63,9 +79,7 @@ class RoundedSheetContent extends StatelessWidget {
                       },
                       separatorBuilder: (context, index) =>
                           SizedBox(height: 4.h),
-                      itemCount: (state.spots.length < 5)
-                          ? state.spots.length
-                          : 6,
+                      itemCount: count,
                     );
                   } else if (state is FetchSpotsLoading) {
                     return const SliverToBoxAdapter(

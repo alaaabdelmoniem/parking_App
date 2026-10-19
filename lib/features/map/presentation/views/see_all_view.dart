@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:parking/core/theme/app_colors.dart';
@@ -7,7 +6,6 @@ import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/core/utils/functions/get_current_postiones.dart';
 import 'package:parking/core/utils/functions/get_distance_and_time.dart';
 import 'package:parking/features/map/data/models/spot_model.dart';
-import 'package:parking/features/map/presentation/manager/cubits/fetch_spots/fetch_spots_cubit.dart';
 import 'package:parking/features/map/presentation/views/widgets/custom_amenities_list_view.dart';
 import 'package:parking/features/map/presentation/views/widgets/custom_live_data.dart';
 import 'package:parking/features/map/presentation/views/widgets/custom_see_all_text_field.dart';
@@ -15,8 +13,8 @@ import 'package:parking/features/map/presentation/views/widgets/parking_spot_det
 import 'package:parking/features/map/presentation/views/widgets/sort_dropdown_button.dart';
 
 class SeeALlSpotsView extends StatefulWidget {
-  const SeeALlSpotsView({super.key});
-
+  const SeeALlSpotsView({super.key, required this.spots});
+  final List<SpotModel> spots;
   @override
   State<SeeALlSpotsView> createState() => _SeeALlSpotsViewState();
 }
@@ -33,9 +31,7 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<FetchSpotsCubit>(
-      context,
-    ).fetchSpots(lat: 48.8566, lng: 2.3522);
+
     _getPosition();
   }
 
@@ -101,6 +97,7 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
 
   @override
   Widget build(BuildContext context) {
+    final visibleSpots = _applyFiltersAndSort(widget.spots);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
@@ -165,56 +162,24 @@ class _SeeALlSpotsViewState extends State<SeeALlSpotsView> {
             ),
             SizedBox(height: 12.h),
             Expanded(
-              child: BlocBuilder<FetchSpotsCubit, FetchSpotsState>(
-                builder: (context, state) {
-                  if (state is FetchSpotsLoading ||
-                      state is FetchSpotsInitial) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  if (state is FetchSpotsError) {
-                    return Center(
-                      child: Text(
-                        state.errorMessage,
-                        style: AppTextStyle.body.copyWith(
-                          color: AppColors.error,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    );
-                  }
-                  final allSpots = (state as FetchSpotsSuccess).spots;
-                  final visibleSpots = _applyFiltersAndSort(allSpots);
-                  return visibleSpots.isEmpty
-                      ? Center(
-                          child: Text(
-                            'No parking spots match your filters.',
-                            style: AppTextStyle.body.copyWith(
-                              color: AppColors.textTertiary,
-                            ),
-                          ),
-                        )
-                      : Column(
-                          children: [
-                            CustomLiveData(length: visibleSpots.length),
-                            SizedBox(height: 10.h),
-
-                            Expanded(
-                              child: ListView.separated(
-                                separatorBuilder: (context, index) =>
-                                    const Divider(color: AppColors.secondary),
-                                itemCount: visibleSpots.length,
-                                itemBuilder: (context, index) {
-                                  return ParkingSpotDetails(
-                                    amenity: true,
-                                    spotModel: visibleSpots[index],
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+              child: Column(
+                children: [
+                  CustomLiveData(length: visibleSpots.length),
+                  SizedBox(height: 10.h),
+                  Expanded(
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) =>
+                          const Divider(color: AppColors.secondary),
+                      itemCount: visibleSpots.length,
+                      itemBuilder: (context, index) {
+                        return ParkingSpotDetails(
+                          amenity: true,
+                          spotModel: visibleSpots[index],
                         );
-                },
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
