@@ -12,9 +12,9 @@ class MainNavView extends StatefulWidget {
 }
 
 class _MainNavViewState extends State<MainNavView> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
-  final _screens = const [MapScreen(), ReservationsView(), ProfileView()];
+  final _screens =  [MapScreen(), ReservationsView(), ProfileView()];
 
   @override
   Widget build(BuildContext context) {

@@ -101,18 +101,18 @@
 //           ? Column(
 //               children: [
 //                 Expanded(
-//                   child: GoogleMap(
-//                     initialCameraPosition: CameraPosition(
-//                       target: _currentPosition!,
-//                       zoom: 10,
-//                     ),
-//                     myLocationEnabled: true,
-//                     myLocationButtonEnabled: true,
-//                     onMapCreated: (controller) =>
-//                         _googleMapController = controller,
-//                     markers: _markers,
-//                   ),
-//                 ),
+                //   child: GoogleMap(
+                //     initialCameraPosition: CameraPosition(
+                //       target: _currentPosition!,
+                //       zoom: 10,
+                //     ),
+                //     myLocationEnabled: true,
+                //     myLocationButtonEnabled: true,
+                //     onMapCreated: (controller) =>
+                //         _googleMapController = controller,
+                //     markers: _markers,
+                //   ),
+                // ),
 //                 TextButton(onPressed: goTo, child: const Text('Go To')),
 //               ],
 //             )

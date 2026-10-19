@@ -12,6 +12,7 @@
 .swiftpm/
 migrate_working_dir/
 .env
+android/secrets.properties
 # IntelliJ related
 *.iml
 *.ipr

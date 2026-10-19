@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -44,7 +45,7 @@ class RoundedSheetContent extends StatelessWidget {
                     SizedBox(height: 12.h),
                     HeaderDraggableSheet(
                       onPressed: () =>
-                      GoRouter.of(context).push(AppRouter.kSeeAllView),
+                          GoRouter.of(context).push(AppRouter.kSeeAllView),
                     ),
                     SizedBox(height: 17.h),
                   ],
@@ -68,7 +69,7 @@ class RoundedSheetContent extends StatelessWidget {
                     );
                   } else if (state is FetchSpotsLoading) {
                     return const SliverToBoxAdapter(
-                      child: Center(child: CircularProgressIndicator()),
+                      child: Center(child: CupertinoActivityIndicator()),
                     );
                   } else if (state is FetchSpotsError) {
                     return SliverToBoxAdapter(
@@ -76,7 +77,7 @@ class RoundedSheetContent extends StatelessWidget {
                     );
                   }
                   return const SliverToBoxAdapter(
-                    child: Center(child: Text('search on city or loaction')),
+                    child: Center(child: CupertinoActivityIndicator()),
                   );
                 },
               ),

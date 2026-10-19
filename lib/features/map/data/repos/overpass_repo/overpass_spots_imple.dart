@@ -13,12 +13,13 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide Headers;
 class OverpassSpotsImple implements OverpassGetSpots {
   final _supabase = Supabase.instance.client;
   @override
-  Future<Either<Failures, void>> fetchOverpassGetSpots() async {
-    const lat = 48.8566;
-    const lng = 2.3522;
+  Future<Either<Failures, void>> fetchOverpassGetSpots({
+    required double lat,
+    required double lng,
+  }) async {
     const radius = 2000; // meters
 
-    const query =
+    final query =
         '[out:json];node["amenity"="parking"](around:$radius,$lat,$lng);out body;';
 
     const url = 'https://overpass-api.de/api/interpreter';

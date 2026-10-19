@@ -21,7 +21,6 @@ void main() async {
     url: dotenv.env['SUPABASE_URL']!,
     publishableKey: dotenv.env['SUPABASE_ANON_KEY'],
   );
-  await OverpassSpotsImple().fetchOverpassGetSpots();
 
   runApp(const ParkingApp());
 }
@@ -33,16 +32,11 @@ class ParkingApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(390, 1000),
-      child: BlocProvider(
-        create: (context) =>
-            FetchSpotsCubit(supabaseRepo: SupabaseRepoImple())
-              ..fetchSpots(lat: 48.8566, lng: 2.3522),
-        child: MaterialApp.router(
-          title: 'parking',
-          theme: AppTheme.light,
-          routerConfig: AppRouter.router,
-          debugShowCheckedModeBanner: false,
-        ),
+      child: MaterialApp.router(
+        title: 'parking',
+        theme: AppTheme.light,
+        routerConfig: AppRouter.router,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

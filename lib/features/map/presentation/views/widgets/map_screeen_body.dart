@@ -1,10 +1,13 @@
 import 'dart:developer' show log;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:parking/core/utils/widgets/custom_floating_action_buttons.dart';
+import 'package:parking/features/map/presentation/manager/cubits/fetch_spots/fetch_spots_cubit.dart';
 import 'package:parking/features/map/presentation/views/widgets/rounded_sheet_content.dart';
 import 'package:parking/features/map/presentation/views/widgets/search_text_field.dart';
 
@@ -21,6 +24,7 @@ class _MapScreenBodyState extends State<MapScreenBody> {
   // current location of the user
   Position? currentPosition;
   List<Marker> markers = [];
+  Position? _lastFetchPosition;
 
   @override
   void initState() {
@@ -40,34 +44,29 @@ class _MapScreenBodyState extends State<MapScreenBody> {
       return;
     }
 
+    final lastKnown = await Geolocator.getLastKnownPosition();
+    if (lastKnown != null) _handlePosition(lastKnown);
+
+    // get a fresh fix without waiting for the user to move
+    try {
+      final fresh = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+        ),
+      );
+      _handlePosition(fresh);
+    } catch (e) {
+      log(e.toString());
+    }
+
+    // 3) Keep listening for movement
     const LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
       distanceFilter: 100,
     );
 
     Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-      (Position position) {
-        setState(() {
-          currentPosition = position;
-          log(
-            'current: ${currentPosition!.latitude},${currentPosition!.longitude}',
-          );
-
-          // remove the old "current location" marker and add the updated one
-          markers.removeWhere(
-            (m) => m.key == const ValueKey('current_location'),
-          );
-          markers.add(
-            Marker(
-              key: const ValueKey('current_location'),
-              height: 80,
-              width: 80,
-              point: LatLng(position.latitude, position.longitude),
-              child: const Icon(Icons.location_on, color: Colors.red, size: 40),
-            ),
-          );
-        });
-      },
+      _handlePosition,
       onError: (e) {
         log(e.toString());
         if (mounted) {
@@ -82,12 +81,51 @@ class _MapScreenBodyState extends State<MapScreenBody> {
     );
   }
 
+  // live inside the listener
+  void _handlePosition(Position position) {
+    if (!mounted) return;
+
+    setState(() {
+      currentPosition = position;
+      markers
+        ..removeWhere((m) => m.key == const ValueKey('current_location'))
+        ..add(
+          Marker(
+            key: const ValueKey('current_location'),
+            width: 80,
+            height: 80,
+            point: LatLng(position.latitude, position.longitude),
+            child: const Icon(Icons.location_on, color: Colors.red, size: 40),
+          ),
+        );
+    });
+
+    // Fetch only on the first fix or after moving ~500 m.
+    final last = _lastFetchPosition;
+    final moved =
+        last == null ||
+        Geolocator.distanceBetween(
+              last.latitude,
+              last.longitude,
+              position.latitude,
+              position.longitude,
+            ) >
+            500;
+    if (moved) {
+      _lastFetchPosition = position;
+      context.read<FetchSpotsCubit>().fetchSpots(
+        lat: position.latitude,
+        lng: position.longitude,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         currentPosition == null
-            ? const Center(child: CircularProgressIndicator())
+            ? const Center(child: CupertinoActivityIndicator())
             : FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
