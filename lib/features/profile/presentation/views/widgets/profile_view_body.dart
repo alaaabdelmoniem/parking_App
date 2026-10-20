@@ -7,7 +7,7 @@ import 'package:parking/features/profile/presentation/views/widgets/profile_head
 import 'package:parking/features/profile/presentation/views/widgets/profile_section_title.dart';
 import 'package:parking/features/profile/presentation/views/widgets/setting_group.dart';
 import 'package:parking/features/profile/presentation/views/widgets/settings_tile.dart';
-import 'package:parking/features/profile/presentation/views/widgets/stats_card_info.dart';
+
 class ProfileViewBody extends StatefulWidget {
   const ProfileViewBody({super.key});
 
@@ -35,8 +35,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
             SizedBox(height: 20.h),
             const ProfileHeader(),
             SizedBox(height: 20.h),
-            const StatsCardInfo(),
-            SizedBox(height: 24.h),
+
             const ProfileSectionTitle('Account'),
             SettingsGroup(
               children: [
@@ -53,7 +52,6 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                 SettingsTile(
                   icon: Icons.directions_car_outlined,
                   title: 'My vehicles',
-                  value: '2',
                   onTap: () {}, // TODO
                 ),
               ],

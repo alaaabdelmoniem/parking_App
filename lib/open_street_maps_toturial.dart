@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -139,7 +140,7 @@ class _OpenStreetMapsTutorialState extends State<OpenStreetMapsTutorial> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: currentPosition == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CupertinoActivityIndicator())
           : FlutterMap(
               mapController: mapController,
               options: MapOptions(

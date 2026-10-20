@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:parking/core/theme/app_colors.dart';
 
@@ -21,7 +22,7 @@ class LoadingOverlay extends StatelessWidget {
             child: Container(
               color: Colors.black.withValues(alpha: 0.4),
               child: const Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+                child: CupertinoActivityIndicator(color: AppColors.primary),
               ),
             ),
           ),
