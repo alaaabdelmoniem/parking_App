@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:parking/core/routers/app_router.dart';
 import 'package:parking/core/theme/app_colors.dart';
 import 'package:parking/core/theme/app_text_style.dart';
+import 'package:parking/core/utils/functions/show_snackbar_message.dart';
 import 'package:parking/core/utils/widgets/custom_outlined_button.dart';
+import 'package:parking/features/auth/presentation/manager/cubits/logout/logout_cubit.dart';
 import 'package:parking/features/profile/presentation/views/widgets/profile_header.dart';
 import 'package:parking/features/profile/presentation/views/widgets/profile_section_title.dart';
 import 'package:parking/features/profile/presentation/views/widgets/setting_group.dart';
@@ -98,12 +103,30 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
             ),
             SizedBox(height: 24.h),
 
-            CustomOutlinedButton(
-              icon: Icons.logout_rounded,
-              label: 'Log out',
-              onPressed: () {},
-              borderColor: AppColors.error,
-              radius: 15.r,
+            BlocConsumer<LogoutCubit, LogoutState>(
+              listener: (context, state) {
+                if (state is LogoutFailure) {
+                  showSnackbarMessage(
+                    context,
+                    content: Text(state.errorMessage),
+                    color: AppColors.error,
+                  );
+                } else if (state is LogoutSuccess) {
+                  GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+                }
+              },
+              builder: (context, state) {
+                bool isLoading = (state is LogoutLoading);
+                return CustomOutlinedButton(
+                  icon: Icons.logout_rounded,
+                  label: isLoading ? 'loading...' : 'Log out',
+                  onPressed: () {
+                    context.read<LogoutCubit>().logout();
+                  },
+                  borderColor: AppColors.error,
+                  radius: 15.r,
+                );
+              },
             ),
 
             SizedBox(height: 40.h),
