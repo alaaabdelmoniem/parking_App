@@ -7,16 +7,18 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:parking/features/map/data/models/spot_model.dart';
 
-class OpenStreetMapsTutorial extends StatefulWidget {
-  const OpenStreetMapsTutorial({super.key});
-
+class Directionsview extends StatefulWidget {
+  const Directionsview({super.key, required this.spotModel});
+  final SpotModel spotModel;
   @override
-  State<OpenStreetMapsTutorial> createState() => _OpenStreetMapsTutorialState();
+  State<Directionsview> createState() => _DirectionsviewState();
 }
 
-class _OpenStreetMapsTutorialState extends State<OpenStreetMapsTutorial> {
+class _DirectionsviewState extends State<Directionsview> {
   MapController mapController = MapController();
+  bool _routeRequested = false;
 
   // current location of the user
   Position? currentPosition;
@@ -30,10 +32,18 @@ class _OpenStreetMapsTutorialState extends State<OpenStreetMapsTutorial> {
     super.initState();
 
     _getCurrentLocation();
+    addDestinationMarker();
   }
 
   Future<void> _getCurrentLocation() async {
-    // permission
+    // 1) Location service (GPS) must be on
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      log('Location services are disabled');
+      return;
+    }
+
+    // 2) permission
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -41,34 +51,34 @@ class _OpenStreetMapsTutorialState extends State<OpenStreetMapsTutorial> {
 
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
+      log('Location permission denied: $permission');
       return;
     }
 
+    // 3) Get a position right away (don't wait for the user to move 100 m)
+    final lastKnown = await Geolocator.getLastKnownPosition();
+    if (lastKnown != null) _setPosition(lastKnown);
+
+    try {
+      final fresh = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 15),
+        ),
+      );
+      _setPosition(fresh);
+    } catch (e) {
+      log('getCurrentPosition failed: $e');
+    }
+
+    // 4) Keep listening for movement
     const LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
       distanceFilter: 100,
     );
 
     Geolocator.getPositionStream(locationSettings: locationSettings).listen(
-      (Position position) {
-        setState(() {
-          currentPosition = position;
-
-          // remove the old "current location" marker and add the updated one
-          markers.removeWhere(
-            (m) => m.key == const ValueKey('current_location'),
-          );
-          markers.add(
-            Marker(
-              key: const ValueKey('current_location'),
-              height: 80,
-              width: 80,
-              point: LatLng(position.latitude, position.longitude),
-              child: const Icon(Icons.location_on, color: Colors.red, size: 40),
-            ),
-          );
-        });
-      },
+      _setPosition,
       onError: (e) {
         log(e.toString());
         if (mounted) {
@@ -83,6 +93,29 @@ class _OpenStreetMapsTutorialState extends State<OpenStreetMapsTutorial> {
     );
   }
 
+  void _setPosition(Position position) {
+    if (!mounted) return;
+    setState(() {
+      currentPosition = position;
+
+      // remove the old "current location" marker and add the updated one
+      markers.removeWhere((m) => m.key == const ValueKey('current_location'));
+      markers.add(
+        Marker(
+          key: const ValueKey('current_location'),
+          height: 80,
+          width: 80,
+          point: LatLng(position.latitude, position.longitude),
+          child: const Icon(Icons.location_on, color: Colors.red, size: 40),
+        ),
+      );
+    });
+    if (!_routeRequested) {
+      _routeRequested = true;
+      _getRoute(LatLng(widget.spotModel.lat, widget.spotModel.lng));
+    }
+  }
+
   Future<void> _getRoute(LatLng destination) async {
     if (currentPosition == null) return;
 
@@ -95,16 +128,20 @@ class _OpenStreetMapsTutorialState extends State<OpenStreetMapsTutorial> {
       final reponse = await Dio().get(url);
       final List<dynamic> coordinates =
           reponse.data['features'][0]['geometry']['coordinates'];
+      print('coordinates$coordinates');
       if (!mounted) return;
       setState(() {
         routePoints = coordinates.map((p) => LatLng(p[1], p[0])).toList();
+        print('work route $routePoints');
       });
+    } on DioException catch (e) {
+      log('Failed to get route: ${e.response?.statusCode} ${e.response?.data}');
     } catch (e) {
-      print('Failed to get route: $e');
+      log('Failed to get route: $e');
     }
   }
 
-  void addDestinationMarker(LatLng point) {
+  void addDestinationMarker() {
     setState(() {
       // clear the previous destination marker and route before adding a new one
       markers.removeWhere((m) => m.key == const ValueKey('destination'));
@@ -114,12 +151,11 @@ class _OpenStreetMapsTutorialState extends State<OpenStreetMapsTutorial> {
           key: const ValueKey('destination'),
           height: 80,
           width: 80,
-          point: point,
+          point: LatLng(widget.spotModel.lat, widget.spotModel.lng),
           child: const Icon(Icons.location_on, color: Colors.blue, size: 40),
         ),
       );
     });
-    _getRoute(point);
   }
 
   void _zoomIn() {
@@ -149,14 +185,13 @@ class _OpenStreetMapsTutorialState extends State<OpenStreetMapsTutorial> {
                   currentPosition!.longitude,
                 ),
                 initialZoom: 15,
-                onTap: (tapPosition, point) => addDestinationMarker(point),
+                // onTap: (tapPosition, point) => addDestinationMarker(point),
               ),
               children: [
                 TileLayer(
                   urlTemplate:
-                      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?api_key=cb1_257r_1_b4c8949f2fd291dcb7dfde6d',
-                  subdomains: const ['a', 'b', 'c', 'd'],
-                  userAgentPackageName: 'com.example.parking_app',
+                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png?key=${dotenv.env['CARTO_API_KEY']}',
+                  userAgentPackageName: 'com.example.parking',
                 ),
 
                 MarkerLayer(markers: markers),

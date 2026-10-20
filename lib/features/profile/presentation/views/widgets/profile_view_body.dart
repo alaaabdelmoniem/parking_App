@@ -112,7 +112,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                     color: AppColors.error,
                   );
                 } else if (state is LogoutSuccess) {
-                  GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
+                  GoRouter.of(context).pushReplacement(AppRouter.kLoginView); 
                 }
               },
               builder: (context, state) {

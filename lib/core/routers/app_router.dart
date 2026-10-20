@@ -12,6 +12,7 @@ import 'package:parking/features/map/presentation/views/spot_details_view.dart';
 import 'package:parking/features/map/presentation/views/summary_booking_view.dart';
 import 'package:parking/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:parking/features/splash/presentation/views/splash_view.dart';
+import 'package:parking/features/reservations/presentation/views/directions_view.dart';
 
 abstract class AppRouter {
   static const konBording = '/onboarding_view';
@@ -24,6 +25,7 @@ abstract class AppRouter {
   static const kCheckoutView = '/Checkout_View';
   static const kBookingConfirmed = '/BookingConfirmedView';
   static const kMainScreen = '/mainScreen';
+  static const kdirectionsView = '/direction_view';
   static final router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashView()),
@@ -32,6 +34,14 @@ abstract class AppRouter {
         builder: (context, state) => const OnboardingViews(),
       ),
       GoRoute(path: kLoginView, builder: (context, state) => const LoginView()),
+      GoRoute(
+        path: kdirectionsView,
+        builder: (context, state) {
+          final spot = (state.extra) as SpotModel;
+
+          return Directionsview(spotModel: spot);
+        },
+      ),
       GoRoute(
         path: kMainScreen,
         builder: (context, state) => const MainNavView(),
@@ -75,7 +85,7 @@ abstract class AppRouter {
         builder: (context, state) {
           final spots = (state.extra) as List<SpotModel>;
 
-          return  SeeALlSpotsView(spots: spots);
+          return SeeALlSpotsView(spots: spots);
         },
       ),
       GoRoute(path: kMapView, builder: (context, state) => const MapScreen()),

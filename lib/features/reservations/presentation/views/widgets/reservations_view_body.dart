@@ -117,16 +117,15 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                             deriveBookingStatus(booking) ==
                                 ReservationCardStatus.active
                             ? () => showActiveSessionSheet(
-                              context,
-                              address:
-                                  spot?.address ?? 'Address unavailable',
-                              spot: spot!,
-                              booking: booking,
-                              onViewQrCode: () => showQrInBottomSheet(
                                 context,
-                                id: booking.spotId,
-                              ),
-                            )
+                                address: spot?.address ?? 'Address unavailable',
+                                spot: spot!,
+                                booking: booking,
+                                onViewQrCode: () => showQrInBottomSheet(
+                                  context,
+                                  id: booking.spotId,
+                                ),
+                              )
                             : null,
                         id: booking.id!,
                         status: deriveBookingStatus(booking),
@@ -140,7 +139,9 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                         timeRange:
                             '${formatTimeOnly(booking.startTime)} - ${formatTimeOnly(booking.endTime)}',
                         totalPrice: booking.totalPrice,
-                        onGetDirections: () {},
+                        onGetDirections: () {
+                          GoRouter.of(context).push(AppRouter.kdirectionsView, extra: spot);
+                        },
                         onBookAgain: () {
                           GoRouter.of(
                             context,

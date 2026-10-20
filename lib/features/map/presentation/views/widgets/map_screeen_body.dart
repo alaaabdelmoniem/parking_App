@@ -2,6 +2,7 @@ import 'dart:developer' show log;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
@@ -136,11 +137,16 @@ class _MapScreenBodyState extends State<MapScreenBody> {
                   initialZoom: 15,
                 ),
                 children: [
+                  // TileLayer(
+                  //   urlTemplate:
+                  //       'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${dotenv.env['CARTO_API_KEY']}',
+                  //   subdomains: const ['a', 'b', 'c', 'd'],
+                  //   userAgentPackageName: 'com.example.parking_app',
+                  // ),
                   TileLayer(
                     urlTemplate:
-                        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=cb1_257r_1_b4c8949f2fd291dcb7dfde6d',
-                    subdomains: const ['a', 'b', 'c', 'd'],
-                    userAgentPackageName: 'com.example.parking_app',
+                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png?key=${dotenv.env['CARTO_API_KEY']}',
+                    userAgentPackageName: 'com.example.parking',
                   ),
 
                   MarkerLayer(markers: markers),
