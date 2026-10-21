@@ -125,6 +125,12 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                                   context,
                                   id: booking.spotId,
                                 ),
+                                onGetDirections: () {
+                                  GoRouter.of(context).push(
+                                    AppRouter.kdirectionsView,
+                                    extra: spot,
+                                  );
+                                },
                               )
                             : null,
                         id: booking.id!,
@@ -140,7 +146,9 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                             '${formatTimeOnly(booking.startTime)} - ${formatTimeOnly(booking.endTime)}',
                         totalPrice: booking.totalPrice,
                         onGetDirections: () {
-                          GoRouter.of(context).push(AppRouter.kdirectionsView, extra: spot);
+                          GoRouter.of(
+                            context,
+                          ).push(AppRouter.kdirectionsView, extra: spot);
                         },
                         onBookAgain: () {
                           GoRouter.of(

@@ -18,7 +18,8 @@ class Directionsview extends StatefulWidget {
 
 class _DirectionsviewState extends State<Directionsview> {
   MapController mapController = MapController();
-  bool _routeRequested = false;
+  Position? _lastRoutePosition;
+  int _routeRequestId = 0;
 
   // current location of the user
   Position? currentPosition;
@@ -57,6 +58,7 @@ class _DirectionsviewState extends State<Directionsview> {
 
     // 3) Get a position right away (don't wait for the user to move 100 m)
     final lastKnown = await Geolocator.getLastKnownPosition();
+
     if (lastKnown != null) _setPosition(lastKnown);
 
     try {
@@ -98,7 +100,6 @@ class _DirectionsviewState extends State<Directionsview> {
     setState(() {
       currentPosition = position;
 
-      // remove the old "current location" marker and add the updated one
       markers.removeWhere((m) => m.key == const ValueKey('current_location'));
       markers.add(
         Marker(
@@ -110,14 +111,28 @@ class _DirectionsviewState extends State<Directionsview> {
         ),
       );
     });
-    if (!_routeRequested) {
-      _routeRequested = true;
+
+    // Request the route on the first fix, then again after moving > 50 m
+    final last = _lastRoutePosition;
+    final moved =
+        last == null ||
+        Geolocator.distanceBetween(
+              last.latitude,
+              last.longitude,
+              position.latitude,
+              position.longitude,
+            ) >
+            50;
+
+    if (moved) {
+      _lastRoutePosition = position;
       _getRoute(LatLng(widget.spotModel.lat, widget.spotModel.lng));
     }
   }
 
   Future<void> _getRoute(LatLng destination) async {
     if (currentPosition == null) return;
+    final requestId = ++_routeRequestId;
 
     final start = LatLng(currentPosition!.latitude, currentPosition!.longitude);
 
@@ -126,13 +141,15 @@ class _DirectionsviewState extends State<Directionsview> {
 
     try {
       final reponse = await Dio().get(url);
+      log('requestId=$requestId current=$_routeRequestId');
       final List<dynamic> coordinates =
           reponse.data['features'][0]['geometry']['coordinates'];
-      print('coordinates$coordinates');
-      if (!mounted) return;
+
+      // A newer request started while this one was loading: drop this result
+      if (!mounted || requestId != _routeRequestId) return;
+
       setState(() {
         routePoints = coordinates.map((p) => LatLng(p[1], p[0])).toList();
-        print('work route $routePoints');
       });
     } on DioException catch (e) {
       log('Failed to get route: ${e.response?.statusCode} ${e.response?.data}');
