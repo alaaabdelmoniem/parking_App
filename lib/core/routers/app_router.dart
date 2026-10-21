@@ -26,6 +26,7 @@ abstract class AppRouter {
   static const kBookingConfirmed = '/BookingConfirmedView';
   static const kMainScreen = '/mainScreen';
   static const kdirectionsView = '/direction_view';
+  static const ktest = '/test';
   static final router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashView()),
