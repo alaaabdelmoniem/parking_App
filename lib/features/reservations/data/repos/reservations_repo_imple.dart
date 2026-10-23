@@ -68,24 +68,24 @@ class ReservationsRepoImple implements ReservationsRepo {
   }
 
   @override
-@override
-Future<Either<Failures, void>> updateDuarationBooking({
-  required String bookingId,
-  required DateTime newEndTime,
-}) async {
-  final supabase = Supabase.instance.client;
+  @override
+  Future<Either<Failures, void>> updateDuarationBooking({
+    required String bookingId,
+    required DateTime newEndTime,
+  }) async {
+    final supabase = Supabase.instance.client;
 
-  try {
-    await supabase
-        .from(CacheKeys.bookingTable)
-        .update({'end_time': newEndTime.toUtc().toIso8601String()})
-        .eq('id', bookingId);
+    try {
+      await supabase
+          .from(CacheKeys.bookingTable)
+          .update({'end_time': newEndTime.toUtc().toIso8601String()})
+          .eq('id', bookingId);
 
-    return const Right(null);
-  } on PostgrestException catch (e) {
-    return Left(DatabaseFailure.fromPostgrestException(exception: e));
-  } catch (e) {
-    return Left(ServerFailures.fromException(e));
+      return const Right(null);
+    } on PostgrestException catch (e) {
+      return Left(DatabaseFailure.fromPostgrestException(exception: e));
+    } catch (e) {
+      return Left(ServerFailures.fromException(e));
+    }
   }
-}
 }

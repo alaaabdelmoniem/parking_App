@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:parking/core/cache/cache_helper.dart';
+import 'package:parking/core/cache/cache_keys.dart';
 import 'package:parking/core/theme/app_colors.dart';
 import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/core/utils/widgets/custom_outlined_button.dart';
@@ -9,6 +11,9 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userinfo =
+        CacheHelper.getValue(key: CacheKeys.userInfoList) as List<String>;
+
     return Center(
       child: Column(
         children: [
@@ -18,7 +23,7 @@ class ProfileHeader extends StatelessWidget {
                 radius: 50.r,
                 backgroundColor: AppColors.primary.withValues(alpha: 0.12),
                 child: Text(
-                  'AM',
+                  userinfo[0][0].toUpperCase(),
                   style: AppTextStyle.sheetTitle.copyWith(
                     color: AppColors.primary,
                     fontSize: 26.sp,
@@ -46,7 +51,7 @@ class ProfileHeader extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           Text(
-            'Abdelmoniem Alaa',
+            userinfo[0],
             style: AppTextStyle.cardTitle.copyWith(
               color: AppColors.textPrimary,
               fontSize: 18.sp,
@@ -54,7 +59,7 @@ class ProfileHeader extends StatelessWidget {
           ),
           SizedBox(height: 2.h),
           Text(
-            'abdelmoniemalaa170@gmail.com',
+            userinfo[1],
             style: AppTextStyle.bodySmall.copyWith(
               color: AppColors.textSecondary,
             ),

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +7,7 @@ import 'package:lottie/lottie.dart';
 import 'package:parking/core/theme/app_colors.dart';
 import 'package:parking/core/routers/app_router.dart';
 import 'package:parking/core/theme/app_text_style.dart';
+import 'package:parking/core/utils/functions/show_snackbar_message.dart';
 import 'package:parking/core/utils/widgets/morphing_loading_button.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/login_with_email/login_with_email_cubit.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/login_with_google/login_google_cubit.dart';
@@ -124,9 +124,12 @@ class _LoginViewBodyState extends State<LoginViewBody> {
             BlocConsumer<LoginWithEmailCubit, LoginWithEmailState>(
               listener: (context, state) {
                 if (state is LoginWithEmailFailure) {
-                  ScaffoldMessenger.of(
+         
+                  showSnackbarMessage(
                     context,
-                  ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                    content: Text(state.errorMessage),
+                    color: AppColors.error,
+                  );
                 }
 
                 if (state is LoginWithEmailSuccess) {

@@ -209,7 +209,7 @@ class _SpotDetailsViewBodyState extends State<SpotDetailsViewBody> {
                   extra: BookModel(
                     startTime: _selectedStartDateTime!,
                     endTime: _selectedEndDateTime!,
-                    duration: duration?.inHours ?? 0,
+                    duration: ((duration?.inMinutes) ?? 0.0) / 60,
                     spotModel: widget.spotModel,
                   ),
                 );
@@ -222,7 +222,7 @@ class _SpotDetailsViewBodyState extends State<SpotDetailsViewBody> {
               }
             },
             spotModel: widget.spotModel,
-            duration: duration?.inHours ?? 0,
+            duration: ((duration?.inMinutes) ?? 0.0) / 60,
           ),
         ),
       ],

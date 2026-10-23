@@ -116,22 +116,35 @@ class _ReservationsViewBodyState extends State<ReservationsViewBody> {
                         onTap:
                             deriveBookingStatus(booking) ==
                                 ReservationCardStatus.active
-                            ? () => showActiveSessionSheet(
-                                context,
-                                address: spot?.address ?? 'Address unavailable',
-                                spot: spot!,
-                                booking: booking,
-                                onViewQrCode: () => showQrInBottomSheet(
+                            ? () async {
+                                final bookingsCubit = context
+                                    .read<GetbookingspotsCubit>();
+
+                                await showActiveSessionSheet(
                                   context,
-                                  id: booking.spotId,
-                                ),
-                                onGetDirections: () {
-                                  GoRouter.of(context).push(
-                                    AppRouter.kdirectionsView,
-                                    extra: spot,
-                                  );
-                                },
-                              )
+                                  address:
+                                      spot?.address ?? 'Address unavailable',
+                                  spot: spot!,
+                                  booking: booking,
+                                  onViewQrCode: () => showQrInBottomSheet(
+                                    context,
+                                    id: booking.spotId,
+                                  ),
+                                  onExtendTime: () => context
+                                      .read<GetbookingspotsCubit>()
+                                      .getBookingSpotsFromSupabase(),
+
+                                  onGetDirections: () {
+                                    GoRouter.of(context).push(
+                                      AppRouter.kdirectionsView,
+                                      extra: spot,
+                                    );
+                                  },
+                                );
+                                if (!bookingsCubit.isClosed) {
+                                  bookingsCubit.getBookingSpotsFromSupabase();
+                                }
+                              }
                             : null,
                         id: booking.id!,
                         status: deriveBookingStatus(booking),

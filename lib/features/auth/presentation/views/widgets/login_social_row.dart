@@ -3,13 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:parking/core/theme/app_colors.dart';
+import 'package:parking/core/utils/functions/show_snackbar_message.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/login_with_google/login_google_cubit.dart';
 import 'package:parking/features/auth/presentation/views/widgets/social_circle.dart';
 
 class LoginSocialRow extends StatelessWidget {
-  const LoginSocialRow({super.key, required this.googleOnTap, required this.facebookOnTap});
-final void Function() googleOnTap;
-final void Function() facebookOnTap;
+  const LoginSocialRow({
+    super.key,
+    required this.googleOnTap,
+    required this.facebookOnTap,
+  });
+  final void Function() googleOnTap;
+  final void Function() facebookOnTap;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,11 +42,11 @@ final void Function() facebookOnTap;
                   //TODO:show animation on dialog
                 }
                 if (state is LoginWithGoogleFailure) {
-                  //TODO: show with toast instead of snackbar
-
-                  ScaffoldMessenger.of(
+                  showSnackbarMessage(
                     context,
-                  ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                    content: Text(state.errorMessage),
+                    color: AppColors.error,
+                  );
                 }
               },
               builder: (context, state) {

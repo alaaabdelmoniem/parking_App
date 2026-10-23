@@ -108,7 +108,7 @@ class OpeningHours {
 
   List<(int, int)> rangesFor(int weekday) => _byWeekday[weekday] ?? const [];
 
-  List<DateTime> slotsFor(DateTime date, {int stepMinutes = 15}) {
+  List<DateTime> slotsFor(DateTime date, {int stepMinutes = 60}) {
     final slots = <DateTime>[];
     for (final (open, close) in rangesFor(date.weekday)) {
       for (var m = open; m <= close; m += stepMinutes) {

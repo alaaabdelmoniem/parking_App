@@ -27,7 +27,7 @@ class SpotSummarySection extends StatefulWidget {
   final SpotModel spotModel;
   final DateTime startTime;
   final DateTime endTime;
-  final int duration;
+  final double duration;
 
   @override
   State<SpotSummarySection> createState() => _SpotSummarySectionState();

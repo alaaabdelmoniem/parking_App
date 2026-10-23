@@ -17,8 +17,7 @@ class TicketCard extends StatelessWidget {
   final BookModel bookModel;
   @override
   Widget build(BuildContext context) {
-    var duration = bookModel.duration;
-    final total = duration * (bookModel.spotModel.priceForHour ?? 0);
+    final total = bookModel.total;
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -153,7 +152,7 @@ class TicketCard extends StatelessWidget {
                     ),
                     TicketCardInfoColumn(
                       label: 'Total paid',
-                      value: '\$$total',
+                      value: '\$${total.toStringAsFixed(3)}',
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mono: true,
                       valueColor: AppColors.primary,
@@ -170,8 +169,6 @@ class TicketCard extends StatelessWidget {
                   ),
                   child: QrImageView(
                     data: bookModel.spotModel.id.toString(),
-                    //فيه إصدارات متعددة، وكل إصدار بيقدر يستوعب كمية مختلفة من البيانات.
-                    // استخدام QrVersions.auto بيخلّي المكتبة تختار الإصدار المناسب تلقائيًا حسب حجم البيانات
                     version: QrVersions.auto,
                     size: 180.w,
                     backgroundColor: AppColors.surface,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:parking/core/theme/app_colors.dart';
 import 'package:parking/core/routers/app_router.dart';
 import 'package:parking/core/theme/app_text_style.dart';
+import 'package:parking/core/utils/functions/show_snackbar_message.dart';
 import 'package:parking/core/utils/widgets/morphing_loading_button.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/register_with_email/register_with_email_cubit.dart';
 import 'package:parking/features/auth/presentation/manager/cubits/register_with_google/register_with_google_cubit.dart';
@@ -133,13 +134,15 @@ class _SignupViewBodyState extends State<SignupViewBody> {
             BlocConsumer<RegisterWithEmailCubit, RegisterWithEmailState>(
               listener: (context, state) {
                 if (state is RegisterWithEmailFailure) {
-                  ScaffoldMessenger.of(
+                  showSnackbarMessage(
                     context,
-                  ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                    content: Text(state.errorMessage),
+                    color: AppColors.error,
+                  );
                 }
 
                 if (state is RegisterWithEmailSuccess) {
-                  GoRouter.of(context).pushReplacement(AppRouter.kMapView);
+                  GoRouter.of(context).pushReplacement(AppRouter.kLoginView);
                 }
               },
 
@@ -150,14 +153,14 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                   isLoading: isLoading,
                   text: 'Sign up',
                   onPressed: () {
-                    if(_formkey.currentState!.validate()){
+                    if (_formkey.currentState!.validate()) {
                       BlocProvider.of<RegisterWithEmailCubit>(
-                      context,
-                    ).registerWithEmailAndPassword(
-                      email: emailController.text,
-                      password: passwordController.text,
-                      fullName: nameController.text,
-                    );
+                        context,
+                      ).registerWithEmailAndPassword(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        fullName: nameController.text,
+                      );
                     }
                   },
                 );

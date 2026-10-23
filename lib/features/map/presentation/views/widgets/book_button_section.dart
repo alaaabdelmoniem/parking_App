@@ -11,7 +11,7 @@ class BookButtonSection extends StatelessWidget {
     required this.duration, this.onTap,
   });
   final SpotModel spotModel;
-  final int duration;
+  final double duration;
   final void Function()? onTap;
   @override
   Widget build(BuildContext context) {

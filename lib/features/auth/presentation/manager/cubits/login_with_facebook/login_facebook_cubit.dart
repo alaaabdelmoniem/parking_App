@@ -6,13 +6,13 @@ part 'login_facebook_state.dart';
 
 class LoginFacebookCubit extends Cubit<LoginFacebookState> {
   LoginFacebookCubit({required this.loginRepo}) : super(LoginFacebookInitial());
-    final LoginRepo loginRepo;
+  final LoginRepo loginRepo;
 
   Future<void> loginWithFacebook() async {
     emit(LoginWithFacebookLoading());
- 
+
     final result = await loginRepo.loginWithFacebook();
- 
+    if (isClosed) return;
     result.fold(
       (failure) {
         emit(LoginWithFacebookFailure(errorMessage: failure.errorMessage));

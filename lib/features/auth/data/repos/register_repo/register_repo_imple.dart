@@ -1,32 +1,48 @@
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
-import 'package:parking/core/cache/cache_helper.dart';
+import 'package:parking/core/cache/auth_cache.dart';
 import 'package:parking/core/cache/cache_keys.dart';
 import 'package:parking/core/errors/failure.dart';
 import 'package:parking/core/errors/supabase_handler.dart';
-import 'package:parking/core/utils/constants.dart';
+import 'package:parking/core/models/oAuth_mixin.dart';
 import 'package:parking/features/auth/data/repos/register_repo/register_repo.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class RegisterRepoImple implements RegisterRepo {
-  final _supabase = Supabase.instance.client;
+class RegisterRepoImple with OAuthMixin implements RegisterRepo {
+  @override
+  final supabase = Supabase.instance.client;
 
   @override
   Future<Either<Failures, void>> registerWithEmailAndPassword({
     required String email,
     required String password,
-    required String fullName,
+    required String userName,
   }) async {
     try {
-      final response = await _supabase.auth.signUp(
+      final response = await supabase.auth.signUp(
         email: email,
         password: password,
-        data: {'full_name': fullName},
+        data: {CacheKeys.usernameFieldInSupabase: userName},
       );
-      await CacheHelper.setValue(
-        key: CacheKeys.uId,
-        value: response.user?.id ?? '',
-      );
+
+      final user = response.user;
+      if (user == null) {
+        return Left(ServerFailures.fromException(Exception('Sign up failed')));
+      }
+
+      if (user.identities?.isEmpty ?? false) {
+        return Left(
+          AuthFailure.fromAuthException(
+            exception: const AuthException(
+              'User already registered',
+              code: 'user_already_exists',
+            ),
+          ),
+        );
+      }
+      if (response.session != null) {
+        await AuthCache.cacheUser(user, fallbackEmail: email);
+      }
 
       return const Right(null);
     } catch (e) {
@@ -40,38 +56,10 @@ class RegisterRepoImple implements RegisterRepo {
   }
 
   @override
-  Future<Either<Failures, void>> registerWithFacebook() async {
-    try {
-      await _supabase.auth.signInWithOAuth(
-        OAuthProvider.facebook,
-        redirectTo: authRedirectUrl,
-      );
-      return const Right(null);
-    } catch (e) {
-      if (e is AuthException) {
-        return Left(AuthFailure.fromAuthException(exception: e));
-      } else {
-        log(e.toString());
-        return Left(ServerFailures.fromException(e));
-      }
-    }
-  }
+  Future<Either<Failures, void>> registerWithFacebook() =>
+      authWithProvider(OAuthProvider.google);
 
   @override
-  Future<Either<Failures, void>> registerWithGoogle() async {
-    try {
-      await _supabase.auth.signInWithOAuth(
-        OAuthProvider.google,
-        redirectTo: authRedirectUrl,
-      );
-      return const Right(null);
-    } catch (e) {
-      if (e is AuthException) {
-        return Left(AuthFailure.fromAuthException(exception: e));
-      } else {
-        log(e.toString());
-        return Left(ServerFailures.fromException(e));
-      }
-    }
-  }
+  Future<Either<Failures, void>> registerWithGoogle() =>
+      authWithProvider(OAuthProvider.facebook);
 }

@@ -15,7 +15,7 @@ class SummaryBookingViewBody extends StatelessWidget {
   final SpotModel spotModel;
   final DateTime startTime;
   final DateTime endTime;
-  final int duration;
+  final double duration;
   @override
   Widget build(BuildContext context) {
     return Padding(

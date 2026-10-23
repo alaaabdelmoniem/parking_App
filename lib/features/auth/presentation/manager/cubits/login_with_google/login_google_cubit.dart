@@ -12,7 +12,7 @@ class LoginGoogleCubit extends Cubit<LoginGoogleState> {
     emit(LoginWithGoogleLoading());
  
     final result = await loginRepo.loginWithGoogle();
- 
+   if (isClosed) return;
     result.fold(
       (failure) {
         emit(LoginWithGoogleFailure(errorMessage: failure.errorMessage));

@@ -18,7 +18,7 @@ class RegisterWithEmailCubit extends Cubit<RegisterWithEmailState> {
     final result = await registerRepo.registerWithEmailAndPassword(
       email: email,
       password: password,
-      fullName: fullName,
+      userName: fullName,
     );
 
     result.fold(

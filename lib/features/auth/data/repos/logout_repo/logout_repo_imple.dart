@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:parking/core/cache/auth_cache.dart';
 import 'package:parking/core/errors/failure.dart';
 import 'package:parking/core/errors/supabase_handler.dart';
 import 'package:parking/features/auth/data/repos/logout_repo/logout_repo.dart';
@@ -11,6 +12,7 @@ class LogoutRepoImple implements LogoutRepo {
   Future<Either<Failures, void>> logout() async {
     try {
       await _client.auth.signOut();
+      AuthCache.removeUser();
       return const Right(null);
     } on AuthException catch (e) {
       return Left(AuthFailure(errorMessage: e.message));

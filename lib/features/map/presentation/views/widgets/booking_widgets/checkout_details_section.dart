@@ -9,6 +9,7 @@ import 'package:parking/core/routers/app_router.dart';
 import 'package:parking/core/theme/app_text_style.dart';
 import 'package:parking/core/utils/functions/format_and_calculate_duration.dart';
 import 'package:parking/core/utils/functions/show_add_card_sheet.dart';
+import 'package:parking/core/utils/functions/show_snackbar_message.dart';
 import 'package:parking/core/utils/widgets/morphing_loading_button.dart';
 import 'package:parking/features/map/data/models/book_model.dart';
 import 'package:parking/features/map/data/models/booking_model.dart';
@@ -27,6 +28,7 @@ class CheckoutDetailsSection extends StatefulWidget {
 }
 
 class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
+  double totalBookingPrice = 0;
   @override
   Widget build(BuildContext context) {
     SpotModel spotModel = widget.bookModel.spotModel;
@@ -95,7 +97,12 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
         ),
         SizedBox(height: 20.h),
 
-        PromoAndSummarySection(bookModel: widget.bookModel),
+        PromoAndSummarySection(
+          bookModel: widget.bookModel,
+          total: (value) {
+            totalBookingPrice = value;
+          },
+        ),
         const PaymentMethodsSection(),
 
         AddPaymentButton(
@@ -105,16 +112,23 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
         BlocConsumer<BookSpotCubit, BookSpotState>(
           listener: (context, state) {
             if (state is BookSpotFailure) {
-              ScaffoldMessenger.of(
+              showSnackbarMessage(
                 context,
-              ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                content: Text(state.errorMessage),
+                color: AppColors.error,
+              );
             }
 
             if (state is BookSpotSuccess) {
               GoRouter.of(context).pushReplacement(
                 AppRouter.kBookingConfirmed,
-                extra: widget.bookModel,
-                // extra: widget.bookModel,
+                extra: BookModel(
+                  startTime: widget.bookModel.startTime,
+                  endTime: widget.bookModel.endTime,
+                  duration: widget.bookModel.duration,
+                  spotModel: widget.bookModel.spotModel,
+                  total: totalBookingPrice,
+                ),
               );
             }
           },
@@ -136,8 +150,7 @@ class _CheckoutDetailsSectionState extends State<CheckoutDetailsSection> {
                     durationMinutes: duration!.inMinutes,
                     pricePerHour: spotModel.priceForHour,
 
-                    totalPrice:
-                        (duration.inHours) * (spotModel.priceForHour ?? 0),
+                    totalPrice: totalBookingPrice,
                   ),
                 );
               },

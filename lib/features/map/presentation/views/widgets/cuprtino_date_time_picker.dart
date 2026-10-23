@@ -33,7 +33,7 @@ Future<DateTime?> showCupertinoDateTimePicker(
   DateTime? initialDateTime,
   OpeningHours? openingHours,
   int daysAhead = 21,
-  int stepMinutes = 15,
+  int stepMinutes = 30,
 }) {
   final now = DateTime.now();
   final safeInitial = (initialDateTime == null || initialDateTime.isBefore(now))

@@ -6,8 +6,13 @@ import 'package:parking/features/map/data/models/book_model.dart';
 import 'package:parking/features/map/presentation/views/widgets/custom_summary_item.dart';
 
 class PromoAndSummarySection extends StatefulWidget {
-  const PromoAndSummarySection({super.key, required this.bookModel});
+  const PromoAndSummarySection({
+    super.key,
+    required this.bookModel,
+    required this.total,
+  });
   final BookModel bookModel;
+  final ValueChanged<double> total;
   @override
   State<PromoAndSummarySection> createState() => _PromoAndSummarySectionState();
 }
@@ -15,6 +20,9 @@ class PromoAndSummarySection extends StatefulWidget {
 class _PromoAndSummarySectionState extends State<PromoAndSummarySection> {
   final TextEditingController _controller = TextEditingController();
   bool _applied = false;
+  double platform_fee = 1.55;
+  double tax = .0875;
+  double ev_charge = .5;
   final double _savedAmount = 2.00;
 
   void _toggleApply() {
@@ -39,6 +47,16 @@ class _PromoAndSummarySectionState extends State<PromoAndSummarySection> {
 
   @override
   Widget build(BuildContext context) {
+    var totalParkingFee =
+        (widget.bookModel.duration) *
+        (widget.bookModel.spotModel.priceForHour!);
+    var totalBooking =
+        (totalParkingFee +
+        (totalParkingFee * double.parse(tax.toStringAsFixed(2))) +
+        ev_charge +
+        platform_fee);
+
+    widget.total(totalBooking - (_applied ? _savedAmount : 0));
     return Column(
       children: [
         Column(
@@ -196,22 +214,25 @@ class _PromoAndSummarySectionState extends State<PromoAndSummarySection> {
                 value: '\$${widget.bookModel.spotModel.priceForHour}',
               ),
               SizedBox(height: 10.h),
-              const CustomSummaryItem(label: 'Tax (8.75%)', value: '\$1.05'),
-              SizedBox(height: 10.h),
-              const CustomSummaryItem(
-                label: 'EV Fast Charging surcharge',
-                value: '\$.50',
+              CustomSummaryItem(
+                label: 'Tax (8.75%)',
+                value: '\$${(totalParkingFee * tax).toStringAsFixed(2)}',
               ),
               SizedBox(height: 10.h),
-              const CustomSummaryItem(
+              CustomSummaryItem(
+                label: 'EV Fast Charging surcharge',
+                value: '\$$ev_charge',
+              ),
+              SizedBox(height: 10.h),
+              CustomSummaryItem(
                 label: 'Convenience & Platform fee',
-                value: '\$1.55',
+                value: '\$$platform_fee',
               ),
               SizedBox(height: 10.h),
               if (_applied) ...[
-                const CustomSummaryItem(
+                CustomSummaryItem(
                   label: 'Member discount',
-                  value: '-\$2.50',
+                  value: '-\$$_savedAmount',
                   valueColor: AppColors.success,
                 ),
                 SizedBox(height: 12.h),
@@ -229,7 +250,7 @@ class _PromoAndSummarySectionState extends State<PromoAndSummarySection> {
                     ),
                   ),
                   Text(
-                    '\$${(widget.bookModel.spotModel.priceForHour! * widget.bookModel.duration) - (_applied ? 2 : 0)}',
+                    '\$${(totalBooking - (_applied ? _savedAmount : 0)).toStringAsFixed(3)}',
                     style: AppTextStyle.monoDisplay.copyWith(
                       color: AppColors.primary,
                       fontSize: 22.sp,

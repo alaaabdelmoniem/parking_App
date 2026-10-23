@@ -115,7 +115,8 @@ class ActiveSessionContent extends StatelessWidget {
                   content: const Text('Duration updated successfully'),
                   color: AppColors.success,
                 );
-                print('Duration updated successfully');
+                Navigator.of(context).pop();
+                onExtendTime?.call();
               }
               if (state is UpdateDurationBookingFailure) {
                 showSnackbarMessage(
