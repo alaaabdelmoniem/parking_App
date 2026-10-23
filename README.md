@@ -1,6 +1,6 @@
 # Parking App
 
-A Flutter mobile application for discovering, booking, and navigating to nearby parking spots in real time.
+A Flutter mobile application for discovering, booking, and navigating to nearby parking spots.
 
 The app combines open map data (OpenStreetMap) with a Supabase backend: the map data tells you *where* parking is, and Supabase adds what OSM doesn't have: pricing, ratings, amenities, availability, and bookings.
 
